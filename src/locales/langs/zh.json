@@ -225,6 +225,11 @@
       "title": "仪表盘",
       "console": "工作台"
     },
+    "community": {
+      "title": "社区管理",
+      "groups": "小组监管",
+      "challenges": "挑战管理"
+    },
     "result": {
       "title": "结果页面",
       "success": "成功页",
