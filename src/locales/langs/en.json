@@ -230,6 +230,12 @@
       "groups": "Groups",
       "challenges": "Challenges"
     },
+    "wellness": {
+      "title": "Health Data",
+      "sleep": "Sleep Management",
+      "journals": "Journal Management",
+      "heartRate": "Heart Rate Management"
+    },
     "result": {
       "title": "Result Page",
       "success": "Success",
@@ -247,6 +253,78 @@
       "role": "Role Manage",
       "userCenter": "User Center",
       "menu": "Menu Manage"
+    }
+  },
+  "wellness": {
+    "common": {
+      "records": "Total records",
+      "users": "Users",
+      "user": "User",
+      "userSearch": "Search name, email or user ID",
+      "date": "Date",
+      "time": "Time",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "updatedAt": "Updated at",
+      "quality": "Data quality",
+      "actions": "Actions",
+      "detail": "Details",
+      "timezone": "Timezone",
+      "device": "Device serial",
+      "duration": "{hours}h {minutes}m"
+    },
+    "quality": { "normal": "Normal", "partial": "Partial", "missing": "Missing" },
+    "context": {
+      "continuous": "Continuous",
+      "manual": "Manual",
+      "workout": "Workout",
+      "sleep": "Sleep"
+    },
+    "sleep": {
+      "title": "Sleep Management",
+      "subtitle": "Review daily sleep summaries, data quality and session details.",
+      "sessionType": "Sleep type",
+      "night": "Night sleep",
+      "nap": "Nap",
+      "duration": "Sleep duration",
+      "score": "Sleep score",
+      "stages": "Sleep stages",
+      "stageValue": "Deep {deep} min · REM {rem} min",
+      "efficiency": "Efficiency",
+      "averageDuration": "Average sleep",
+      "averageScore": "Average score",
+      "detailTitle": "Sleep Record Details",
+      "averageHeartRate": "Average heart rate",
+      "spo2": "Average SpO₂",
+      "sessions": "Sleep sessions",
+      "startedAt": "Started at",
+      "wakeCount": "Wake count"
+    },
+    "journals": {
+      "title": "Journal Management",
+      "subtitle": "Review journals by user, date and mood. Full text appears only in details.",
+      "searchPlaceholder": "Search user, title or content",
+      "titleColumn": "Title",
+      "untitled": "Untitled",
+      "mood": "Mood",
+      "preview": "Content preview",
+      "averageMood": "Average mood",
+      "moodCoverage": "Mood coverage",
+      "detailTitle": "Journal Details",
+      "moods": { "1": "Very low", "2": "Low", "3": "Neutral", "4": "Good", "5": "Great" }
+    },
+    "heartRate": {
+      "title": "Heart Rate Management",
+      "subtitle": "Review daily heart-rate summaries, data quality and source samples.",
+      "context": "Sample context",
+      "average": "Average heart rate",
+      "averageResting": "Average resting rate",
+      "range": "Heart-rate range",
+      "resting": "Resting rate",
+      "samples": "Samples",
+      "hrv": "HRV",
+      "detailTitle": "Heart Rate Details",
+      "latestSamples": "Sample details (latest {count})"
     }
   },
   "table": {

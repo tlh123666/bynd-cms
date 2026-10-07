@@ -230,6 +230,12 @@
       "groups": "小组监管",
       "challenges": "挑战管理"
     },
+    "wellness": {
+      "title": "健康数据",
+      "sleep": "睡眠管理",
+      "journals": "日记管理",
+      "heartRate": "心率管理"
+    },
     "result": {
       "title": "结果页面",
       "success": "成功页",
@@ -247,6 +253,78 @@
       "role": "角色管理",
       "userCenter": "个人中心",
       "menu": "菜单管理"
+    }
+  },
+  "wellness": {
+    "common": {
+      "records": "记录总数",
+      "users": "涉及用户",
+      "user": "用户",
+      "userSearch": "搜索用户名称、邮箱或 ID",
+      "date": "日期",
+      "time": "时间",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "updatedAt": "更新时间",
+      "quality": "数据质量",
+      "actions": "操作",
+      "detail": "详情",
+      "timezone": "时区",
+      "device": "设备序列号",
+      "duration": "{hours} 小时 {minutes} 分钟"
+    },
+    "quality": { "normal": "正常", "partial": "部分缺失", "missing": "数据缺失" },
+    "context": {
+      "continuous": "连续监测",
+      "manual": "手动测量",
+      "workout": "运动",
+      "sleep": "睡眠"
+    },
+    "sleep": {
+      "title": "睡眠管理",
+      "subtitle": "审阅用户每日睡眠汇总、数据质量与睡眠会话明细。",
+      "sessionType": "睡眠类型",
+      "night": "夜间睡眠",
+      "nap": "午睡",
+      "duration": "睡眠时长",
+      "score": "睡眠评分",
+      "stages": "睡眠阶段",
+      "stageValue": "深睡 {deep} 分钟 · REM {rem} 分钟",
+      "efficiency": "睡眠效率",
+      "averageDuration": "平均睡眠",
+      "averageScore": "平均评分",
+      "detailTitle": "睡眠记录详情",
+      "averageHeartRate": "平均心率",
+      "spo2": "平均血氧",
+      "sessions": "睡眠会话",
+      "startedAt": "开始时间",
+      "wakeCount": "醒来次数"
+    },
+    "journals": {
+      "title": "日记管理",
+      "subtitle": "按用户、日期和心情审阅日记记录；正文仅在详情中展示。",
+      "searchPlaceholder": "搜索用户、标题或正文",
+      "titleColumn": "标题",
+      "untitled": "无标题",
+      "mood": "心情",
+      "preview": "内容摘要",
+      "averageMood": "平均心情",
+      "moodCoverage": "心情记录率",
+      "detailTitle": "日记详情",
+      "moods": { "1": "很差", "2": "较差", "3": "一般", "4": "不错", "5": "很好" }
+    },
+    "heartRate": {
+      "title": "心率管理",
+      "subtitle": "查看每日心率汇总、数据质量以及对应的原始采样点。",
+      "context": "采样场景",
+      "average": "平均心率",
+      "averageResting": "平均静息心率",
+      "range": "心率范围",
+      "resting": "静息心率",
+      "samples": "采样点数",
+      "hrv": "HRV",
+      "detailTitle": "心率记录详情",
+      "latestSamples": "采样明细（最近 {count} 条）"
     }
   },
   "table": {

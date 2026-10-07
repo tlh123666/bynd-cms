@@ -1,0 +1,91 @@
+.wellness-page {
+  height: 100%;
+}
+
+.wellness-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 2px 0 6px;
+    font-size: 28px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--el-text-color-secondary);
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    color: var(--el-color-primary);
+    letter-spacing: 0.16em;
+  }
+}
+
+.wellness-card {
+  border-radius: 14px;
+}
+
+.wellness-search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+
+  .keyword {
+    width: 260px;
+  }
+
+  .date-range {
+    width: 260px;
+  }
+
+  .select-filter {
+    width: 150px;
+  }
+}
+
+.user-cell {
+  strong,
+  small {
+    display: block;
+  }
+
+  small {
+    margin-top: 3px;
+    color: var(--el-text-color-secondary);
+  }
+}
+
+.detail-section {
+  margin-top: 22px;
+
+  h3 {
+    margin: 0 0 12px;
+  }
+}
+
+.journal-content {
+  padding: 16px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  background: var(--el-fill-color-lighter);
+  border-radius: 10px;
+}
+
+@media (width <= 800px) {
+  .wellness-heading {
+    align-items: flex-start;
+  }
+
+  .wellness-search {
+    .keyword,
+    .date-range,
+    .select-filter {
+      width: 100%;
+    }
+  }
+}
