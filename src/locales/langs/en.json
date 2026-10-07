@@ -225,6 +225,11 @@
       "title": "Dashboard",
       "console": "Console"
     },
+    "community": {
+      "title": "Community",
+      "groups": "Groups",
+      "challenges": "Challenges"
+    },
     "result": {
       "title": "Result Page",
       "success": "Success",
