@@ -515,6 +515,82 @@
       "archiveText": "O desafio será removido do catálogo, mas o histórico de participação será preservado."
     }
   },
+  "dashboardAdmin": {
+    "title": "Visão geral das operações",
+    "subtitle": "Totais em tempo real dos utilizadores BYND e da atividade da comunidade.",
+    "refresh": "Atualizar",
+    "cards": {
+      "users": "Utilizadores registados",
+      "groups": "Grupos da comunidade",
+      "challenges": "Desafios",
+      "participants": "Participações em desafios"
+    },
+    "recentUsers": "Utilizadores registados recentemente",
+    "recentUsersHint": "Os cinco registos mais recentes da base de dados de utilizadores.",
+    "manageUsers": "Gerir utilizadores"
+  },
+  "userAdmin": {
+    "title": "Gestão de utilizadores",
+    "subtitle": "Gerir utilizadores registados, dados do perfil, estado da conta e medições corporais mais recentes.",
+    "create": "Adicionar utilizador",
+    "createTitle": "Registar utilizador",
+    "editTitle": "Editar perfil do utilizador",
+    "edit": "Editar",
+    "deactivate": "Desativar",
+    "deactivateTitle": "Desativar utilizador",
+    "save": "Guardar alterações",
+    "search": "Pesquisar",
+    "reset": "Repor",
+    "refresh": "Atualizar",
+    "searchPlaceholder": "Pesquisar por nome, e-mail, telefone ou nome de utilizador",
+    "timezonePlaceholder": "Por exemplo, Europe/Lisbon",
+    "total": "{count} utilizadores registados",
+    "empty": "Nenhum utilizador corresponde aos filtros atuais.",
+    "confirmDeactivate": "Desativar {name}? A conta deixará de poder iniciar sessão, mas os dados históricos serão mantidos.",
+    "columns": { "user": "Utilizador", "measurements": "Altura / Peso", "actions": "Ações" },
+    "fields": {
+      "email": "E-mail de registo",
+      "fullName": "Nome completo",
+      "username": "Nome de utilizador",
+      "phone": "Número de telefone",
+      "birthDate": "Data de nascimento",
+      "biologicalSex": "Sexo biológico",
+      "genderIdentity": "Identidade de género",
+      "locale": "Idioma preferido",
+      "timezone": "Fuso horário",
+      "status": "Estado da conta",
+      "heightCm": "Altura (cm)",
+      "weightKg": "Peso (kg)",
+      "avatarUrl": "URL do avatar",
+      "lastLoginAt": "Último início de sessão",
+      "createdAt": "Data de registo"
+    },
+    "status": {
+      "0": "Pendente",
+      "1": "Ativa",
+      "2": "Suspensa",
+      "3": "Bloqueada",
+      "4": "Desativada"
+    },
+    "sex": {
+      "female": "Feminino",
+      "male": "Masculino",
+      "intersex": "Intersexo",
+      "unknown": "Desconhecido",
+      "prefer_not_to_say": "Prefiro não indicar"
+    },
+    "validation": {
+      "emailRequired": "O e-mail de registo é obrigatório",
+      "emailInvalid": "Introduza um endereço de e-mail válido",
+      "fullNameRequired": "O nome completo é obrigatório",
+      "localeRequired": "O idioma preferido é obrigatório",
+      "timezoneRequired": "O fuso horário é obrigatório"
+    },
+    "messages": {
+      "saved": "Informação do utilizador guardada.",
+      "deactivated": "Conta do utilizador desativada."
+    }
+  },
   "table": {
     "form": { "reset": "Redefinir", "submit": "Enviar" },
     "searchBar": {

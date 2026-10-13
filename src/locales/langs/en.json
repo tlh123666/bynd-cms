@@ -571,6 +571,79 @@
       "archiveText": "Archiving removes the challenge from the user catalog but preserves participation history."
     }
   },
+  "dashboardAdmin": {
+    "title": "Operations Overview",
+    "subtitle": "Live totals from BYND users and community activity.",
+    "refresh": "Refresh",
+    "cards": {
+      "users": "Registered Users",
+      "groups": "Community Groups",
+      "challenges": "Challenges",
+      "participants": "Challenge Enrolments"
+    },
+    "recentUsers": "Recently Registered Users",
+    "recentUsersHint": "The five latest registrations from the user database.",
+    "manageUsers": "Manage users"
+  },
+  "userAdmin": {
+    "title": "User Management",
+    "subtitle": "Manage registered users, profile details, account status and the latest body measurements.",
+    "create": "Add User",
+    "createTitle": "Register User",
+    "editTitle": "Edit User Profile",
+    "edit": "Edit",
+    "deactivate": "Deactivate",
+    "deactivateTitle": "Deactivate User",
+    "save": "Save Changes",
+    "search": "Search",
+    "reset": "Reset",
+    "refresh": "Refresh",
+    "searchPlaceholder": "Search by name, email, phone or username",
+    "timezonePlaceholder": "For example, Europe/Lisbon",
+    "total": "{count} registered users",
+    "empty": "No users match the current filters.",
+    "confirmDeactivate": "Deactivate {name}? The account will no longer be able to sign in, but its historical data will be retained.",
+    "columns": { "user": "User", "measurements": "Height / Weight", "actions": "Actions" },
+    "fields": {
+      "email": "Registration Email",
+      "fullName": "Full Name",
+      "username": "Username",
+      "phone": "Phone Number",
+      "birthDate": "Date of Birth",
+      "biologicalSex": "Biological Sex",
+      "genderIdentity": "Gender Identity",
+      "locale": "Preferred Language",
+      "timezone": "Time Zone",
+      "status": "Account Status",
+      "heightCm": "Height (cm)",
+      "weightKg": "Weight (kg)",
+      "avatarUrl": "Avatar URL",
+      "lastLoginAt": "Last Login",
+      "createdAt": "Registered At"
+    },
+    "status": {
+      "0": "Pending",
+      "1": "Active",
+      "2": "Suspended",
+      "3": "Banned",
+      "4": "Deactivated"
+    },
+    "sex": {
+      "female": "Female",
+      "male": "Male",
+      "intersex": "Intersex",
+      "unknown": "Unknown",
+      "prefer_not_to_say": "Prefer not to say"
+    },
+    "validation": {
+      "emailRequired": "Registration email is required",
+      "emailInvalid": "Enter a valid email address",
+      "fullNameRequired": "Full name is required",
+      "localeRequired": "Preferred language is required",
+      "timezoneRequired": "Time zone is required"
+    },
+    "messages": { "saved": "User information saved.", "deactivated": "User account deactivated." }
+  },
   "table": {
     "form": {
       "reset": "Reset",

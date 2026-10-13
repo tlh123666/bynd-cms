@@ -65,25 +65,33 @@
           </template>
         </ElTableColumn>
         <ElTableColumn prop="ownerName" :label="t('groupAdmin.columns.owner')" min-width="130" />
-        <ElTableColumn :label="t('groupAdmin.columns.type')" width="100">
+        <ElTableColumn :label="t('groupAdmin.columns.type')" min-width="130">
           <template #default="{ row }"
             ><ElTag effect="plain">{{ visibilityLabel(row.visibility) }}</ElTag></template
           >
         </ElTableColumn>
-        <ElTableColumn prop="memberCount" :label="t('groupAdmin.columns.members')" width="90" />
-        <ElTableColumn prop="goalCount" :label="t('groupAdmin.columns.goals')" width="90" />
-        <ElTableColumn prop="messageCount" :label="t('groupAdmin.columns.messages')" width="90" />
-        <ElTableColumn :label="t('groupAdmin.columns.status')" width="100">
+        <ElTableColumn
+          prop="memberCount"
+          :label="t('groupAdmin.columns.members')"
+          min-width="110"
+        />
+        <ElTableColumn prop="goalCount" :label="t('groupAdmin.columns.goals')" min-width="100" />
+        <ElTableColumn
+          prop="messageCount"
+          :label="t('groupAdmin.columns.messages')"
+          min-width="115"
+        />
+        <ElTableColumn :label="t('groupAdmin.columns.status')" min-width="120">
           <template #default="{ row }"
             ><ElTag :type="row.status === 'active' ? 'success' : 'info'">{{
               statusLabel(row.status)
             }}</ElTag></template
           >
         </ElTableColumn>
-        <ElTableColumn :label="t('groupAdmin.columns.created')" width="180">
+        <ElTableColumn :label="t('groupAdmin.columns.created')" min-width="180">
           <template #default="{ row }">{{ formatDate(row.createdAt) }}</template>
         </ElTableColumn>
-        <ElTableColumn :label="t('groupAdmin.columns.actions')" width="90" fixed="right">
+        <ElTableColumn :label="t('groupAdmin.columns.actions')" min-width="120" fixed="right">
           <template #default="{ row }"
             ><ElButton link type="primary" @click="selected = row">{{
               t('groupAdmin.details')
@@ -242,6 +250,11 @@
   }
   .content-card {
     border-radius: 14px;
+  }
+  :deep(.el-table th .cell) {
+    line-height: 1.25;
+    white-space: normal;
+    word-break: normal;
   }
   .filters {
     display: grid;
