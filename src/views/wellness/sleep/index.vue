@@ -10,60 +10,24 @@
 
     <StatCards :items="statCards" />
 
-    <ElCard class="wellness-card art-table-card" shadow="never">
-      <ArtTableHeader :loading="loading" @refresh="load">
-        <template #left>
-          <div class="wellness-search">
-            <ElInput
-              v-model="filters.keyword"
-              class="keyword"
-              clearable
-              :placeholder="t('wellness.common.userSearch')"
-              @keyup.enter="search"
-            />
-            <ElDatePicker
-              v-model="filters.dates"
-              class="date-range"
-              type="daterange"
-              value-format="YYYY-MM-DD"
-              :start-placeholder="t('wellness.common.startDate')"
-              :end-placeholder="t('wellness.common.endDate')"
-            />
-            <ElSelect
-              v-model="filters.sessionType"
-              class="select-filter"
-              clearable
-              :placeholder="t('wellness.sleep.sessionType')"
-            >
-              <ElOption :label="t('wellness.sleep.night')" value="night" />
-              <ElOption :label="t('wellness.sleep.nap')" value="nap" />
-            </ElSelect>
-            <ElSelect
-              v-model="filters.dataQuality"
-              class="select-filter"
-              clearable
-              :placeholder="t('wellness.common.quality')"
-            >
-              <ElOption
-                v-for="item in qualityOptions"
-                :key="item"
-                :label="t(`wellness.quality.${item}`)"
-                :value="item"
-              />
-            </ElSelect>
-            <ElButton type="primary" @click="search">{{ t('table.searchBar.search') }}</ElButton>
-            <ElButton @click="reset">{{ t('table.searchBar.reset') }}</ElButton>
-          </div>
-        </template>
-      </ArtTableHeader>
+    <ArtSearchBar
+      v-model="searchForm"
+      :items="searchItems"
+      :show-expand="false"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
+
+    <ElCard class="wellness-card art-table-card table-card-with-search" shadow="never">
+      <ArtTableHeader :loading="loading" @refresh="refreshData" />
 
       <ArtTable
         :loading="loading"
-        :data="items"
+        :data="data"
         :pagination="pagination"
         row-key="id"
-        @pagination:size-change="changeSize"
-        @pagination:current-change="changePage"
+        @pagination:size-change="handleSizeChange"
+        @pagination:current-change="handleCurrentChange"
       >
         <ElTableColumn :label="t('wellness.common.user')" min-width="210">
           <template #default="{ row }"
@@ -166,14 +130,15 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, reactive, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useTable } from '@/hooks/core/useTable'
   import {
     fetchSleepDetail,
     fetchSleepRecords,
     type SleepDetail,
-    type SleepItem,
-    type SleepStats
+    type SleepStats,
+    type WellnessListParams
   } from '@/api/wellness'
   import StatCards from '../components/StatCards.vue'
   import { formatDate, formatDateTime, formatDuration, qualityTagType } from '../shared'
@@ -181,23 +146,65 @@
   defineOptions({ name: 'WellnessSleep' })
   const { t, locale } = useI18n()
   const qualityOptions = ['normal', 'partial', 'missing']
-  const loading = ref(false),
-    drawerVisible = ref(false)
-  const items = ref<SleepItem[]>([]),
-    detail = ref<SleepDetail>()
+  const drawerVisible = ref(false)
+  const detail = ref<SleepDetail>()
   const stats = ref<SleepStats>({
     recordCount: 0,
     userCount: 0,
     averageSleepHours: 0,
     averageScore: 0
   })
-  const pagination = reactive({ current: 1, size: 20, total: 0 })
-  const filters = reactive<{
+  const searchForm = ref<{
     keyword: string
     dates: string[]
     sessionType: string
     dataQuality: string
   }>({ keyword: '', dates: [], sessionType: '', dataQuality: '' })
+  const searchItems = computed(() => [
+    {
+      label: t('wellness.common.user'),
+      key: 'keyword',
+      type: 'input',
+      props: { clearable: true, placeholder: t('wellness.common.userSearch') }
+    },
+    {
+      label: t('wellness.common.date'),
+      key: 'dates',
+      type: 'daterange',
+      props: {
+        type: 'daterange',
+        valueFormat: 'YYYY-MM-DD',
+        startPlaceholder: t('wellness.common.startDate'),
+        endPlaceholder: t('wellness.common.endDate')
+      }
+    },
+    {
+      label: t('wellness.sleep.sessionType'),
+      key: 'sessionType',
+      type: 'select',
+      props: {
+        clearable: true,
+        placeholder: t('wellness.sleep.sessionType'),
+        options: [
+          { label: t('wellness.sleep.night'), value: 'night' },
+          { label: t('wellness.sleep.nap'), value: 'nap' }
+        ]
+      }
+    },
+    {
+      label: t('wellness.common.quality'),
+      key: 'dataQuality',
+      type: 'select',
+      props: {
+        clearable: true,
+        placeholder: t('wellness.common.quality'),
+        options: qualityOptions.map((item) => ({
+          label: t(`wellness.quality.${item}`),
+          value: item
+        }))
+      }
+    }
+  ])
   const statCards = computed(() => [
     { label: t('wellness.common.records'), value: stats.value.recordCount },
     { label: t('wellness.common.users'), value: stats.value.userCount },
@@ -207,51 +214,52 @@
     },
     { label: t('wellness.sleep.averageScore'), value: stats.value.averageScore.toFixed(1) }
   ])
-  const load = async () => {
-    loading.value = true
-    try {
-      const response = await fetchSleepRecords({
-        page: pagination.current,
-        pageSize: pagination.size,
-        keyword: filters.keyword || undefined,
-        startDate: filters.dates?.[0],
-        endDate: filters.dates?.[1],
-        sessionType: filters.sessionType || undefined,
-        dataQuality: filters.dataQuality || undefined
-      })
-      items.value = response.items
-      pagination.total = response.total
-      stats.value = response.stats
-    } finally {
-      loading.value = false
+  const fetchTableData = async (params: WellnessListParams) => {
+    const response = await fetchSleepRecords(params)
+    stats.value = response.stats
+    return response
+  }
+
+  const {
+    data,
+    loading,
+    pagination,
+    getData,
+    replaceSearchParams,
+    resetSearchParams,
+    refreshData,
+    handleSizeChange,
+    handleCurrentChange
+  } = useTable({
+    core: {
+      apiFn: fetchTableData,
+      apiParams: { page: 1, pageSize: 20 },
+      paginationKey: { current: 'page', size: 'pageSize' }
     }
+  })
+
+  const handleSearch = (params: Record<string, any>) => {
+    const { dates, ...filters } = params
+    replaceSearchParams({
+      ...filters,
+      startDate: dates?.[0],
+      endDate: dates?.[1]
+    })
+    getData()
   }
-  const search = () => {
-    pagination.current = 1
-    load()
-  }
-  const reset = () => {
-    Object.assign(filters, { keyword: '', dates: [], sessionType: '', dataQuality: '' })
-    search()
-  }
-  const changePage = (page: number) => {
-    pagination.current = page
-    load()
-  }
-  const changeSize = (size: number) => {
-    pagination.size = size
-    pagination.current = 1
-    load()
-  }
+  const handleReset = () => resetSearchParams()
   const openDetail = async (id: string) => {
     detail.value = await fetchSleepDetail(id)
     drawerVisible.value = true
   }
   const scoreType = (score?: number) =>
     score == null ? 'info' : score >= 80 ? 'success' : score >= 60 ? 'warning' : 'danger'
-  load()
 </script>
 
 <style scoped lang="scss">
   @use '../shared';
+
+  .table-card-with-search {
+    margin-top: 12px;
+  }
 </style>

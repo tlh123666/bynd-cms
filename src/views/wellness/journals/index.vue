@@ -10,65 +10,24 @@
 
     <StatCards :items="statCards" />
 
-    <ElCard class="wellness-card art-table-card" shadow="never">
-      <ArtTableHeader :loading="loading" @refresh="load">
-        <template #left>
-          <div class="wellness-search">
-            <ElInput
-              v-model="filters.keyword"
-              class="keyword"
-              clearable
-              :placeholder="t('wellness.diaries.searchPlaceholder')"
-              @keyup.enter="search"
-            />
-            <ElDatePicker
-              v-model="filters.dates"
-              class="date-range"
-              type="daterange"
-              value-format="YYYY-MM-DD"
-              :start-placeholder="t('wellness.common.startDate')"
-              :end-placeholder="t('wellness.common.endDate')"
-            />
-            <ElSelect
-              v-model="filters.storyStatus"
-              class="select-filter"
-              clearable
-              :placeholder="t('wellness.diaries.storyStatus')"
-            >
-              <ElOption
-                v-for="status in storyStatuses"
-                :key="status"
-                :label="statusLabel(status)"
-                :value="status"
-              />
-            </ElSelect>
-            <ElSelect
-              v-model="filters.contextKind"
-              class="select-filter"
-              clearable
-              filterable
-              :placeholder="t('wellness.diaries.contextKind')"
-            >
-              <ElOption
-                v-for="kind in contextKinds"
-                :key="kind"
-                :label="contextLabel(kind)"
-                :value="kind"
-              />
-            </ElSelect>
-            <ElButton type="primary" @click="search">{{ t('table.searchBar.search') }}</ElButton>
-            <ElButton @click="reset">{{ t('table.searchBar.reset') }}</ElButton>
-          </div>
-        </template>
-      </ArtTableHeader>
+    <ArtSearchBar
+      v-model="searchForm"
+      :items="searchItems"
+      :show-expand="false"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
+
+    <ElCard class="wellness-card art-table-card table-card-with-search" shadow="never">
+      <ArtTableHeader :loading="loading" @refresh="refreshData" />
 
       <ArtTable
         :loading="loading"
-        :data="items"
+        :data="data"
         :pagination="pagination"
         row-key="id"
-        @pagination:size-change="changeSize"
-        @pagination:current-change="changePage"
+        @pagination:size-change="handleSizeChange"
+        @pagination:current-change="handleCurrentChange"
       >
         <ElTableColumn :label="t('wellness.common.user')" min-width="210">
           <template #default="{ row }">
@@ -185,14 +144,15 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, reactive, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useTable } from '@/hooks/core/useTable'
   import {
     fetchDiaryDetail,
     fetchDiaryRecords,
     type DiaryDetail,
-    type DiaryItem,
-    type DiaryStats
+    type DiaryStats,
+    type WellnessListParams
   } from '@/api/wellness'
   import StatCards from '../components/StatCards.vue'
   import { formatDate, formatDateTime } from '../shared'
@@ -221,10 +181,8 @@
     'custom'
   ]
 
-  const loading = ref(false)
   const detailLoading = ref(false)
   const drawerVisible = ref(false)
-  const items = ref<DiaryItem[]>([])
   const detail = ref<DiaryDetail>()
   const stats = ref<DiaryStats>({
     recordCount: 0,
@@ -234,8 +192,7 @@
     readyRate: 0,
     contextCoverage: 0
   })
-  const pagination = reactive({ current: 1, size: 20, total: 0 })
-  const filters = reactive({
+  const searchForm = ref({
     keyword: '',
     dates: [] as string[],
     storyStatus: '',
@@ -258,43 +215,87 @@
   const statusType = (status: string) =>
     status === 'ready' ? 'success' : status === 'failed' ? 'danger' : 'warning'
 
-  const load = async () => {
-    loading.value = true
-    try {
-      const response = await fetchDiaryRecords({
-        page: pagination.current,
-        pageSize: pagination.size,
-        keyword: filters.keyword || undefined,
-        startDate: filters.dates?.[0],
-        endDate: filters.dates?.[1],
-        storyStatus: filters.storyStatus || undefined,
-        contextKind: filters.contextKind || undefined
-      })
-      items.value = response.items
-      pagination.total = response.total
-      stats.value = response.stats
-    } finally {
-      loading.value = false
+  const searchItems = computed(() => [
+    {
+      label: t('wellness.common.user'),
+      key: 'keyword',
+      type: 'input',
+      props: { clearable: true, placeholder: t('wellness.diaries.searchPlaceholder') }
+    },
+    {
+      label: t('wellness.common.date'),
+      key: 'dates',
+      type: 'daterange',
+      props: {
+        type: 'daterange',
+        valueFormat: 'YYYY-MM-DD',
+        startPlaceholder: t('wellness.common.startDate'),
+        endPlaceholder: t('wellness.common.endDate')
+      }
+    },
+    {
+      label: t('wellness.diaries.storyStatus'),
+      key: 'storyStatus',
+      type: 'select',
+      props: {
+        clearable: true,
+        placeholder: t('wellness.diaries.storyStatus'),
+        options: storyStatuses.map((status) => ({
+          label: statusLabel(status),
+          value: status
+        }))
+      }
+    },
+    {
+      label: t('wellness.diaries.contextKind'),
+      key: 'contextKind',
+      type: 'select',
+      props: {
+        clearable: true,
+        filterable: true,
+        placeholder: t('wellness.diaries.contextKind'),
+        options: contextKinds.map((kind) => ({
+          label: contextLabel(kind),
+          value: kind
+        }))
+      }
     }
+  ])
+
+  const fetchTableData = async (params: WellnessListParams) => {
+    const response = await fetchDiaryRecords(params)
+    stats.value = response.stats
+    return response
   }
 
-  const search = () => {
-    pagination.current = 1
-    load()
+  const {
+    data,
+    loading,
+    pagination,
+    getData,
+    replaceSearchParams,
+    resetSearchParams,
+    refreshData,
+    handleSizeChange,
+    handleCurrentChange
+  } = useTable({
+    core: {
+      apiFn: fetchTableData,
+      apiParams: { page: 1, pageSize: 20 },
+      paginationKey: { current: 'page', size: 'pageSize' }
+    }
+  })
+
+  const handleSearch = (params: Record<string, any>) => {
+    const { dates, ...filters } = params
+    replaceSearchParams({
+      ...filters,
+      startDate: dates?.[0],
+      endDate: dates?.[1]
+    })
+    getData()
   }
-  const reset = () => {
-    Object.assign(filters, { keyword: '', dates: [], storyStatus: '', contextKind: '' })
-    search()
-  }
-  const changePage = (page: number) => {
-    pagination.current = page
-    load()
-  }
-  const changeSize = (size: number) => {
-    pagination.size = size
-    pagination.current = 1
-    load()
-  }
+  const handleReset = () => resetSearchParams()
   const openDetail = async (id: string) => {
     drawerVisible.value = true
     detailLoading.value = true
@@ -305,12 +306,14 @@
       detailLoading.value = false
     }
   }
-
-  load()
 </script>
 
 <style scoped lang="scss">
   @use '../shared';
+
+  .table-card-with-search {
+    margin-top: 12px;
+  }
 
   .story-cell {
     strong,
