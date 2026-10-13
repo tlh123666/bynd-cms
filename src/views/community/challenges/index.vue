@@ -149,11 +149,20 @@
               value-format="YYYY-MM-DDTHH:mm:ssZ"
           /></ElFormItem>
         </div>
-        <ElDivider content-position="left">专家信息（可选）</ElDivider>
-        <div class="form-grid">
-          <ElFormItem label="姓名"><ElInput v-model="form.expertName" /></ElFormItem>
-          <ElFormItem label="职称"><ElInput v-model="form.expertTitle" /></ElFormItem>
-          <ElFormItem label="资历 / 注册号"><ElInput v-model="form.expertCredential" /></ElFormItem>
+        <ElDivider />
+        <div class="expert-heading">
+          <div>
+            <strong>专家合作</strong>
+            <small>开启后，姓名、职称和资历 / 注册号均为必填项</small>
+          </div>
+          <ElSwitch v-model="expertEnabled" />
+        </div>
+        <div v-if="expertEnabled" class="form-grid">
+          <ElFormItem label="姓名" required><ElInput v-model="form.expertName" /></ElFormItem>
+          <ElFormItem label="职称" required><ElInput v-model="form.expertTitle" /></ElFormItem>
+          <ElFormItem label="资历 / 注册号" required
+            ><ElInput v-model="form.expertCredential"
+          /></ElFormItem>
           <ElFormItem label="头像 URL"><ElInput v-model="form.expertAvatarUrl" /></ElFormItem>
         </div>
       </ElForm>
@@ -288,6 +297,7 @@
   const editorVisible = ref(false),
     daysVisible = ref(false),
     editingId = ref('')
+  const expertEnabled = ref(false)
   const form = reactive<ChallengePayload>(blankForm())
   const activeChallenge = ref<CommunityChallenge>(),
     dayNumber = ref(1)
@@ -317,6 +327,7 @@
   }
   const openEditor = (item?: CommunityChallenge) => {
     editingId.value = item?.id || ''
+    expertEnabled.value = Boolean(item?.expert)
     Object.assign(form, blankForm(), item || {}, {
       expertName: item?.expert?.name || '',
       expertTitle: item?.expert?.title || '',
@@ -328,12 +339,29 @@
   const saveChallenge = async () => {
     if (!form.title.trim() || !form.slug.trim() || !form.description.trim())
       return ElMessage.warning('请填写名称、Slug 和完整介绍')
+    if (
+      expertEnabled.value &&
+      (!form.expertName.trim() || !form.expertTitle.trim() || !form.expertCredential.trim())
+    )
+      return ElMessage.warning('专家姓名、职称和资历 / 注册号需要完整填写')
+
+    const payload: ChallengePayload = {
+      ...form,
+      title: form.title.trim(),
+      slug: form.slug.trim(),
+      summary: form.summary.trim(),
+      description: form.description.trim(),
+      expertName: expertEnabled.value ? form.expertName.trim() : '',
+      expertTitle: expertEnabled.value ? form.expertTitle.trim() : '',
+      expertCredential: expertEnabled.value ? form.expertCredential.trim() : '',
+      expertAvatarUrl: expertEnabled.value ? form.expertAvatarUrl.trim() : ''
+    }
     saving.value = true
     try {
       if (editingId.value) {
-        await updateCommunityChallenge(editingId.value, { ...form })
+        await updateCommunityChallenge(editingId.value, payload)
       } else {
-        await createCommunityChallenge({ ...form })
+        await createCommunityChallenge(payload)
       }
       ElMessage.success('挑战已保存')
       editorVisible.value = false
@@ -506,6 +534,24 @@
 
     .wide {
       grid-column: 1 / -1;
+    }
+  }
+
+  .expert-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 20px;
+
+    strong,
+    small {
+      display: block;
+    }
+
+    small {
+      margin-top: 4px;
+      color: var(--el-text-color-secondary);
     }
   }
 
