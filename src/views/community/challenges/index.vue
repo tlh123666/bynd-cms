@@ -80,7 +80,7 @@
             </div>
           </template>
         </ElTableColumn>
-        <ElTableColumn :label="t('challengeAdmin.columns.progress')" width="170">
+        <ElTableColumn :label="t('challengeAdmin.columns.progress')" min-width="190">
           <template #default="{ row }"
             ><ElProgress :percentage="contentProgress(row)" :stroke-width="7"
           /></template>
@@ -88,17 +88,17 @@
         <ElTableColumn
           prop="enrollmentCount"
           :label="t('challengeAdmin.columns.participants')"
-          width="110"
+          min-width="150"
         />
-        <ElTableColumn :label="t('challengeAdmin.columns.status')" width="110">
+        <ElTableColumn :label="t('challengeAdmin.columns.status')" min-width="130">
           <template #default="{ row }"
             ><ElTag :type="statusType(row.status)">{{ statusLabel(row.status) }}</ElTag></template
           >
         </ElTableColumn>
-        <ElTableColumn :label="t('challengeAdmin.columns.updated')" width="180">
+        <ElTableColumn :label="t('challengeAdmin.columns.updated')" min-width="180">
           <template #default="{ row }">{{ formatDate(row.updatedAt) }}</template>
         </ElTableColumn>
-        <ElTableColumn :label="t('challengeAdmin.columns.actions')" width="280" fixed="right">
+        <ElTableColumn :label="t('challengeAdmin.columns.actions')" min-width="320" fixed="right">
           <template #default="{ row }">
             <ElButton link type="primary" @click="openEditor(row)">{{
               t('challengeAdmin.actions.edit')
@@ -617,6 +617,11 @@
 
   .content-card {
     border-radius: 14px;
+  }
+  :deep(.el-table th .cell) {
+    line-height: 1.25;
+    white-space: normal;
+    word-break: normal;
   }
 
   .filters {

@@ -571,6 +571,73 @@
       "archiveText": "归档后该挑战将从用户目录中移除，但会保留参与历史。"
     }
   },
+  "dashboardAdmin": {
+    "title": "运营概览",
+    "subtitle": "展示 BYND 用户与社区活动的实时统计数据。",
+    "refresh": "刷新",
+    "cards": {
+      "users": "注册用户",
+      "groups": "社区小组",
+      "challenges": "挑战",
+      "participants": "挑战参与人次"
+    },
+    "recentUsers": "最近注册用户",
+    "recentUsersHint": "来自用户数据库的最近五条注册记录。",
+    "manageUsers": "管理用户"
+  },
+  "userAdmin": {
+    "title": "用户管理",
+    "subtitle": "管理注册用户、个人档案、账号状态以及最新的身体测量信息。",
+    "create": "新增用户",
+    "createTitle": "注册用户",
+    "editTitle": "编辑用户资料",
+    "edit": "编辑",
+    "deactivate": "停用",
+    "deactivateTitle": "停用用户",
+    "save": "保存修改",
+    "search": "搜索",
+    "reset": "重置",
+    "refresh": "刷新",
+    "searchPlaceholder": "按姓名、邮箱、手机号或用户名搜索",
+    "timezonePlaceholder": "例如 Asia/Shanghai",
+    "total": "共 {count} 位注册用户",
+    "empty": "没有符合当前筛选条件的用户。",
+    "confirmDeactivate": "确定停用 {name} 吗？该账号将无法登录，但历史数据会被保留。",
+    "columns": { "user": "用户", "measurements": "身高 / 体重", "actions": "操作" },
+    "fields": {
+      "email": "注册邮箱",
+      "fullName": "姓名",
+      "username": "用户名",
+      "phone": "手机号",
+      "birthDate": "出生日期",
+      "biologicalSex": "生理性别",
+      "genderIdentity": "性别认同",
+      "locale": "首选语言",
+      "timezone": "时区",
+      "status": "账号状态",
+      "heightCm": "身高（厘米）",
+      "weightKg": "体重（公斤）",
+      "avatarUrl": "头像地址",
+      "lastLoginAt": "最近登录",
+      "createdAt": "注册时间"
+    },
+    "status": { "0": "待激活", "1": "正常", "2": "已暂停", "3": "已封禁", "4": "已停用" },
+    "sex": {
+      "female": "女性",
+      "male": "男性",
+      "intersex": "双性",
+      "unknown": "未知",
+      "prefer_not_to_say": "不愿透露"
+    },
+    "validation": {
+      "emailRequired": "请填写注册邮箱",
+      "emailInvalid": "请输入有效的邮箱地址",
+      "fullNameRequired": "请填写姓名",
+      "localeRequired": "请选择首选语言",
+      "timezoneRequired": "请填写时区"
+    },
+    "messages": { "saved": "用户信息已保存。", "deactivated": "用户账号已停用。" }
+  },
   "table": {
     "form": {
       "reset": "重置",

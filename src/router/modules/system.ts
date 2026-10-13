@@ -21,16 +21,6 @@ export const systemRoutes: AppRouteRecord = {
       }
     },
     {
-      path: 'role',
-      name: 'Role',
-      component: '/system/role',
-      meta: {
-        title: 'menus.system.role',
-        keepAlive: true,
-        roles: ['R_SUPER']
-      }
-    },
-    {
       path: 'user-center',
       name: 'UserCenter',
       component: '/system/user-center',
@@ -39,21 +29,6 @@ export const systemRoutes: AppRouteRecord = {
         isHide: true,
         keepAlive: true,
         isHideTab: true
-      }
-    },
-    {
-      path: 'menu',
-      name: 'Menus',
-      component: '/system/menu',
-      meta: {
-        title: 'menus.system.menu',
-        keepAlive: true,
-        roles: ['R_SUPER'],
-        authList: [
-          { title: '新增', authMark: 'add' },
-          { title: '编辑', authMark: 'edit' },
-          { title: '删除', authMark: 'delete' }
-        ]
       }
     }
   ]
