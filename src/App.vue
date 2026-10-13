@@ -19,6 +19,7 @@
   import { toggleTransition } from './utils/ui/animation'
   import { checkStorageCompatibility } from './utils/storage'
   import { initializeTheme } from './hooks/core/useTheme'
+  import { LanguageEnum } from './enums/appEnum'
 
   const userStore = useUserStore()
   const { language } = storeToRefs(userStore)
@@ -29,6 +30,7 @@
   }
 
   onBeforeMount(() => {
+    userStore.setLanguage(LanguageEnum.EN)
     toggleTransition(true)
     initializeTheme()
   })
