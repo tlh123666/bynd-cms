@@ -5,7 +5,6 @@ dist-ssr
 *.local
 .cursorrules
 
-# Auto-generated files
-src/types/import/auto-imports.d.ts
-src/types/import/components.d.ts
+# Local auto-import tooling metadata. The generated TypeScript declarations
+# are committed so a clean clone can type-check before Vite starts.
 .auto-import.json
