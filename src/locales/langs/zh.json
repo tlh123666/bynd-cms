@@ -413,6 +413,164 @@
     },
     "messages": { "saved": "保存成功", "deleted": "删除成功", "archived": "归档成功" }
   },
+  "groupAdmin": {
+    "eyebrow": "BYND 社区",
+    "title": "小组管理",
+    "subtitle": "查看用户创建的小组、参与规模与社区活跃情况。",
+    "refresh": "刷新",
+    "stats": {
+      "groups": "小组总数",
+      "members": "活跃成员",
+      "goals": "小组目标",
+      "messages": "聊天消息"
+    },
+    "filters": {
+      "keyword": "搜索小组名称或数字 ID",
+      "visibility": "公开范围",
+      "status": "状态",
+      "search": "搜索",
+      "reset": "重置"
+    },
+    "visibility": {
+      "public": "公开",
+      "private": "私密",
+      "publicGroup": "公开小组",
+      "privateGroup": "私密小组"
+    },
+    "status": { "active": "活跃", "archived": "已归档" },
+    "columns": {
+      "group": "小组",
+      "owner": "群主",
+      "type": "类型",
+      "members": "成员",
+      "goals": "目标",
+      "messages": "消息",
+      "status": "状态",
+      "created": "创建时间",
+      "actions": "操作"
+    },
+    "details": "详情",
+    "empty": "没有找到小组",
+    "detailTitle": "小组详情",
+    "groupId": "小组 ID {id}",
+    "noDescription": "暂无小组介绍",
+    "unknown": "未知",
+    "activeMembers": "活跃成员",
+    "totalGoals": "累计目标",
+    "validMessages": "有效消息",
+    "loadFailed": "小组数据加载失败"
+  },
+  "challengeAdmin": {
+    "eyebrow": "BYND 社区",
+    "title": "挑战管理",
+    "subtitle": "创建并管理 BYND 挑战及每日内容。",
+    "create": "创建挑战",
+    "edit": "编辑挑战",
+    "stats": {
+      "all": "全部挑战",
+      "published": "已发布",
+      "drafts": "草稿",
+      "participants": "参与人数"
+    },
+    "filters": {
+      "keyword": "搜索标题或 Slug",
+      "domain": "领域",
+      "status": "状态",
+      "search": "搜索",
+      "reset": "重置"
+    },
+    "columns": {
+      "challenge": "挑战",
+      "progress": "内容进度",
+      "participants": "参与人数",
+      "status": "状态",
+      "updated": "更新时间",
+      "actions": "操作"
+    },
+    "actions": {
+      "edit": "编辑",
+      "dailyContent": "每日内容",
+      "publish": "发布",
+      "archive": "归档",
+      "cancel": "取消",
+      "save": "保存"
+    },
+    "empty": "暂无挑战",
+    "daysUnit": "{count} 天",
+    "status": { "draft": "草稿", "published": "已发布", "archived": "已归档" },
+    "domains": {
+      "body": "身体",
+      "mind": "心理",
+      "sleep_recovery": "睡眠与恢复",
+      "nutrition_metabolism": "营养与代谢",
+      "longevity": "长寿",
+      "sustainable_performance": "可持续表现",
+      "life_wellbeing": "生活与幸福感"
+    },
+    "form": {
+      "name": "挑战名称",
+      "slug": "Slug",
+      "domain": "领域",
+      "duration": "持续天数",
+      "sortOrder": "排序",
+      "summary": "摘要",
+      "description": "详细介绍",
+      "coverUrl": "封面 URL",
+      "availableFrom": "开始时间",
+      "availableUntil": "结束时间"
+    },
+    "expert": {
+      "title": "专家合作",
+      "hint": "启用后，姓名、职称和资质为必填项。",
+      "name": "姓名",
+      "role": "职称",
+      "credential": "资质 / 注册信息",
+      "avatarUrl": "头像 URL"
+    },
+    "daily": {
+      "title": "每日内容",
+      "configured": "已配置 {configured} / {total} 天",
+      "day": "第 {day} 天",
+      "titleField": "标题",
+      "content": "内容",
+      "action": "当日行动",
+      "trackingMethod": "记录方式",
+      "manual": "手动打卡",
+      "workout": "运动数据验证",
+      "workoutMetric": "运动指标",
+      "activityCode": "活动代码",
+      "activityCodeHint": "留空表示所有运动",
+      "targetValue": "目标值",
+      "saveDay": "保存第 {day} 天"
+    },
+    "metrics": {
+      "workout_count": "运动次数",
+      "active_minutes": "活动分钟",
+      "distance_km": "距离（公里）",
+      "calories": "卡路里",
+      "steps": "步数"
+    },
+    "validation": {
+      "challengeRequired": "请填写名称、Slug 和详细介绍。",
+      "expertRequired": "请完整填写专家姓名、职称和资质。",
+      "dayRequired": "请完整填写当日标题、内容和行动。",
+      "workoutRequired": "请选择运动指标并输入大于 0 的目标值。",
+      "missingDays": "请先完成以下天数的内容：{days}。",
+      "invalidWorkoutDay": "请完成第 {day} 天的运动指标和目标值。"
+    },
+    "messages": {
+      "saved": "挑战已保存。",
+      "daySaved": "第 {day} 天已保存。",
+      "published": "挑战已发布。",
+      "archived": "挑战已归档。"
+    },
+    "confirm": {
+      "publishTitle": "发布挑战",
+      "publishText": "发布后用户将可参与此挑战，是否继续？",
+      "archiveTitle": "归档挑战",
+      "archiveText": "归档后该挑战将从用户目录中移除，但会保留参与历史。"
+    }
+  },
   "table": {
     "form": {
       "reset": "重置",
