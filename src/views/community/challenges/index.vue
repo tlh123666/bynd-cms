@@ -2,25 +2,25 @@
   <div class="challenge-page">
     <div class="page-heading">
       <div>
-        <p class="eyebrow">PREMIUM COMMUNITY</p>
-        <h1>挑战管理</h1>
-        <p>策划 BYND 与专业人士创建的 Premium 挑战体验。</p>
+        <p class="eyebrow">BYND COMMUNITY</p>
+        <h1>Challenge Management</h1>
+        <p>Create and manage BYND challenges and their daily content.</p>
       </div>
-      <ElButton type="primary" @click="openEditor()">创建挑战</ElButton>
+      <ElButton type="primary" @click="openEditor()">Create Challenge</ElButton>
     </div>
 
     <div class="stat-grid">
       <div class="stat-card"
-        ><span>全部挑战</span><strong>{{ challenges.length }}</strong></div
+        ><span>All Challenges</span><strong>{{ challenges.length }}</strong></div
       >
       <div class="stat-card"
-        ><span>已发布</span><strong>{{ statusCount.published }}</strong></div
+        ><span>Published</span><strong>{{ statusCount.published }}</strong></div
       >
       <div class="stat-card"
-        ><span>草稿</span><strong>{{ statusCount.draft }}</strong></div
+        ><span>Drafts</span><strong>{{ statusCount.draft }}</strong></div
       >
       <div class="stat-card"
-        ><span>参与人数</span><strong>{{ enrollmentTotal }}</strong></div
+        ><span>Participants</span><strong>{{ enrollmentTotal }}</strong></div
       >
     </div>
 
@@ -29,10 +29,10 @@
         <ElInput
           v-model="filters.keyword"
           clearable
-          placeholder="搜索标题或 slug"
+          placeholder="Search title or slug"
           @keyup.enter="loadChallenges"
         />
-        <ElSelect v-model="filters.domain" clearable placeholder="挑战领域">
+        <ElSelect v-model="filters.domain" clearable placeholder="Domain">
           <ElOption
             v-for="item in domains"
             :key="item.value"
@@ -40,74 +40,74 @@
             :value="item.value"
           />
         </ElSelect>
-        <ElSelect v-model="filters.status" clearable placeholder="状态">
-          <ElOption label="草稿" value="draft" /><ElOption
-            label="已发布"
+        <ElSelect v-model="filters.status" clearable placeholder="Status">
+          <ElOption label="Draft" value="draft" /><ElOption
+            label="Published"
             value="published"
-          /><ElOption label="已归档" value="archived" />
+          /><ElOption label="Archived" value="archived" />
         </ElSelect>
-        <ElButton type="primary" @click="loadChallenges">查询</ElButton>
-        <ElButton @click="resetFilters">重置</ElButton>
+        <ElButton type="primary" @click="loadChallenges">Search</ElButton>
+        <ElButton @click="resetFilters">Reset</ElButton>
       </div>
 
       <ElTable v-loading="loading" :data="challenges" row-key="id">
-        <ElTableColumn label="挑战" min-width="300">
+        <ElTableColumn label="Challenge" min-width="300">
           <template #default="{ row }">
             <div class="challenge-cell">
               <ElImage v-if="row.coverUrl" :src="row.coverUrl" fit="cover" class="cover" />
               <div v-else class="cover placeholder">BYND</div>
               <div
                 ><strong>{{ row.title }}</strong
-                ><small>{{ domainLabel(row.domain) }} · {{ row.durationDays }} 天</small></div
+                ><small>{{ domainLabel(row.domain) }} · {{ row.durationDays }} days</small></div
               >
             </div>
           </template>
         </ElTableColumn>
-        <ElTableColumn label="内容进度" width="170">
+        <ElTableColumn label="Content Progress" width="170">
           <template #default="{ row }"
             ><ElProgress :percentage="contentProgress(row)" :stroke-width="7"
           /></template>
         </ElTableColumn>
-        <ElTableColumn prop="enrollmentCount" label="参与人数" width="100" />
-        <ElTableColumn label="状态" width="110">
+        <ElTableColumn prop="enrollmentCount" label="Participants" width="110" />
+        <ElTableColumn label="Status" width="110">
           <template #default="{ row }"
             ><ElTag :type="statusType(row.status)">{{ statusLabel(row.status) }}</ElTag></template
           >
         </ElTableColumn>
-        <ElTableColumn label="更新时间" width="180">
+        <ElTableColumn label="Updated" width="180">
           <template #default="{ row }">{{ formatDate(row.updatedAt) }}</template>
         </ElTableColumn>
-        <ElTableColumn label="操作" width="260" fixed="right">
+        <ElTableColumn label="Actions" width="280" fixed="right">
           <template #default="{ row }">
-            <ElButton link type="primary" @click="openEditor(row)">编辑</ElButton>
-            <ElButton link type="primary" @click="openDays(row)">每日内容</ElButton>
+            <ElButton link type="primary" @click="openEditor(row)">Edit</ElButton>
+            <ElButton link type="primary" @click="openDays(row)">Daily Content</ElButton>
             <ElButton v-if="row.status === 'draft'" link type="success" @click="publish(row)"
-              >发布</ElButton
+              >Publish</ElButton
             >
             <ElButton v-if="row.status !== 'archived'" link type="danger" @click="archive(row)"
-              >归档</ElButton
+              >Archive</ElButton
             >
           </template>
         </ElTableColumn>
       </ElTable>
-      <ElEmpty v-if="!loading && challenges.length === 0" description="暂无挑战" />
+      <ElEmpty v-if="!loading && challenges.length === 0" description="No challenges" />
     </ElCard>
 
     <ElDrawer
       v-model="editorVisible"
-      :title="editingId ? '编辑挑战' : '创建挑战'"
+      :title="editingId ? 'Edit Challenge' : 'Create Challenge'"
       size="620px"
       destroy-on-close
     >
       <ElForm label-position="top" :model="form">
         <div class="form-grid">
-          <ElFormItem label="挑战名称" class="wide"
+          <ElFormItem label="Challenge Name" class="wide"
             ><ElInput v-model="form.title" maxlength="180" show-word-limit
           /></ElFormItem>
           <ElFormItem label="Slug"
             ><ElInput v-model="form.slug" placeholder="7-day-mobility"
           /></ElFormItem>
-          <ElFormItem label="领域"
+          <ElFormItem label="Domain"
             ><ElSelect v-model="form.domain"
               ><ElOption
                 v-for="item in domains"
@@ -115,11 +115,11 @@
                 :label="item.label"
                 :value="item.value" /></ElSelect
           ></ElFormItem>
-          <ElFormItem label="持续天数"
+          <ElFormItem label="Duration (days)"
             ><ElInputNumber v-model="form.durationDays" :min="1" :max="365"
           /></ElFormItem>
-          <ElFormItem label="排序"><ElInputNumber v-model="form.sortOrder" :min="0" /></ElFormItem>
-          <ElFormItem label="摘要" class="wide"
+          <ElFormItem label="Sort Order"><ElInputNumber v-model="form.sortOrder" :min="0" /></ElFormItem>
+          <ElFormItem label="Summary" class="wide"
             ><ElInput
               v-model="form.summary"
               type="textarea"
@@ -127,7 +127,7 @@
               maxlength="500"
               show-word-limit
           /></ElFormItem>
-          <ElFormItem label="完整介绍" class="wide"
+          <ElFormItem label="Description" class="wide"
             ><ElInput
               v-model="form.description"
               type="textarea"
@@ -135,14 +135,14 @@
               maxlength="10000"
               show-word-limit
           /></ElFormItem>
-          <ElFormItem label="封面 URL" class="wide"><ElInput v-model="form.coverUrl" /></ElFormItem>
-          <ElFormItem label="上线时间"
+          <ElFormItem label="Cover URL" class="wide"><ElInput v-model="form.coverUrl" /></ElFormItem>
+          <ElFormItem label="Available From"
             ><ElDatePicker
               v-model="form.availableFrom"
               type="datetime"
               value-format="YYYY-MM-DDTHH:mm:ssZ"
           /></ElFormItem>
-          <ElFormItem label="下线时间"
+          <ElFormItem label="Available Until"
             ><ElDatePicker
               v-model="form.availableUntil"
               type="datetime"
@@ -152,33 +152,33 @@
         <ElDivider />
         <div class="expert-heading">
           <div>
-            <strong>专家合作</strong>
-            <small>开启后，姓名、职称和资历 / 注册号均为必填项</small>
+            <strong>Expert Collaboration</strong>
+            <small>When enabled, name, title and credential are required.</small>
           </div>
           <ElSwitch v-model="expertEnabled" />
         </div>
         <div v-if="expertEnabled" class="form-grid">
-          <ElFormItem label="姓名" required><ElInput v-model="form.expertName" /></ElFormItem>
-          <ElFormItem label="职称" required><ElInput v-model="form.expertTitle" /></ElFormItem>
-          <ElFormItem label="资历 / 注册号" required
+          <ElFormItem label="Name" required><ElInput v-model="form.expertName" /></ElFormItem>
+          <ElFormItem label="Title" required><ElInput v-model="form.expertTitle" /></ElFormItem>
+          <ElFormItem label="Credential / Registration" required
             ><ElInput v-model="form.expertCredential"
           /></ElFormItem>
-          <ElFormItem label="头像 URL"><ElInput v-model="form.expertAvatarUrl" /></ElFormItem>
+          <ElFormItem label="Avatar URL"><ElInput v-model="form.expertAvatarUrl" /></ElFormItem>
         </div>
       </ElForm>
       <template #footer
-        ><ElButton @click="editorVisible = false">取消</ElButton
-        ><ElButton type="primary" :loading="saving" @click="saveChallenge">保存</ElButton></template
+        ><ElButton @click="editorVisible = false">Cancel</ElButton
+        ><ElButton type="primary" :loading="saving" @click="saveChallenge">Save</ElButton></template
       >
     </ElDrawer>
 
-    <ElDrawer v-model="daysVisible" title="每日内容" size="680px" destroy-on-close>
+    <ElDrawer v-model="daysVisible" title="Daily Content" size="680px" destroy-on-close>
       <template v-if="activeChallenge">
         <div class="days-head"
           ><div
             ><h2>{{ activeChallenge.title }}</h2
             ><p
-              >已完成 {{ activeChallenge.dayCount }} / {{ activeChallenge.durationDays }} 天</p
+              >Configured {{ activeChallenge.dayCount }} / {{ activeChallenge.durationDays }} days</p
             ></div
           ><ElTag>{{ domainLabel(activeChallenge.domain) }}</ElTag></div
         >
@@ -189,39 +189,39 @@
             :type="dayNumber === day ? 'primary' : undefined"
             :plain="dayNumber !== day"
             @click="selectDay(day)"
-            >第 {{ day }} 天</ElButton
+            >Day {{ day }}</ElButton
           >
         </div>
         <ElForm label-position="top" :model="dayForm">
-          <ElFormItem label="标题"><ElInput v-model="dayForm.title" maxlength="180" /></ElFormItem>
-          <ElFormItem label="内容"
+          <ElFormItem label="Title"><ElInput v-model="dayForm.title" maxlength="180" /></ElFormItem>
+          <ElFormItem label="Content"
             ><ElInput v-model="dayForm.content" type="textarea" :rows="7" maxlength="20000"
           /></ElFormItem>
-          <ElFormItem label="当天行动"
+          <ElFormItem label="Daily Action"
             ><ElInput v-model="dayForm.action" type="textarea" :rows="2" maxlength="500"
           /></ElFormItem>
           <div class="form-grid">
-            <ElFormItem label="记录方式"
-              ><ElSelect v-model="dayForm.trackingMode"
-                ><ElOption label="手动完成" value="manual" /><ElOption
-                  label="训练自动验证"
+            <ElFormItem label="Tracking Method"
+              ><ElSelect v-model="dayForm.trackingMode" @change="handleTrackingModeChange"
+                ><ElOption label="Manual completion" value="manual" /><ElOption
+                  label="Verified workout"
                   value="workout" /></ElSelect
             ></ElFormItem>
             <template v-if="dayForm.trackingMode === 'workout'">
-              <ElFormItem label="训练指标"
+              <ElFormItem label="Workout Metric" required
                 ><ElSelect v-model="dayForm.workoutMetric"
-                  ><ElOption label="训练次数" value="workout_count" /><ElOption
-                    label="活跃分钟"
+                  ><ElOption label="Workout count" value="workout_count" /><ElOption
+                    label="Active minutes"
                     value="active_minutes" /><ElOption
-                    label="距离（km）"
-                    value="distance_km" /><ElOption label="热量" value="calories" /><ElOption
-                    label="步数"
+                    label="Distance (km)"
+                    value="distance_km" /><ElOption label="Calories" value="calories" /><ElOption
+                    label="Steps"
                     value="steps" /></ElSelect
               ></ElFormItem>
-              <ElFormItem label="活动代码"
-                ><ElInput v-model="dayForm.activityCode" placeholder="留空代表全部训练"
+              <ElFormItem label="Activity Code"
+                ><ElInput v-model="dayForm.activityCode" placeholder="Leave blank for all workouts"
               /></ElFormItem>
-              <ElFormItem label="目标值"
+              <ElFormItem label="Target Value" required
                 ><ElInputNumber v-model="dayForm.targetValue" :min="0.01"
               /></ElFormItem>
             </template>
@@ -230,7 +230,7 @@
       </template>
       <template #footer
         ><ElButton type="primary" :loading="savingDay" @click="saveDay"
-          >保存第 {{ dayNumber }} 天</ElButton
+          >Save Day {{ dayNumber }}</ElButton
         ></template
       >
     </ElDrawer>
@@ -256,13 +256,13 @@
 
   defineOptions({ name: 'CommunityChallenges' })
   const domains: { value: CommunityDomain; label: string }[] = [
-    { value: 'body', label: '身体' },
-    { value: 'mind', label: '头脑' },
-    { value: 'sleep_recovery', label: '睡眠与恢复' },
-    { value: 'nutrition_metabolism', label: '营养与代谢' },
-    { value: 'longevity', label: '长寿' },
-    { value: 'sustainable_performance', label: '可持续表现' },
-    { value: 'life_wellbeing', label: '生活与福祉' }
+    { value: 'body', label: 'Body' },
+    { value: 'mind', label: 'Mind' },
+    { value: 'sleep_recovery', label: 'Sleep & Recovery' },
+    { value: 'nutrition_metabolism', label: 'Nutrition & Metabolism' },
+    { value: 'longevity', label: 'Longevity' },
+    { value: 'sustainable_performance', label: 'Sustainable Performance' },
+    { value: 'life_wellbeing', label: 'Life & Wellbeing' }
   ]
   const blankForm = (): ChallengePayload => ({
     slug: '',
@@ -338,12 +338,12 @@
   }
   const saveChallenge = async () => {
     if (!form.title.trim() || !form.slug.trim() || !form.description.trim())
-      return ElMessage.warning('请填写名称、Slug 和完整介绍')
+      return ElMessage.warning('Enter a name, slug and description.')
     if (
       expertEnabled.value &&
       (!form.expertName.trim() || !form.expertTitle.trim() || !form.expertCredential.trim())
     )
-      return ElMessage.warning('专家姓名、职称和资历 / 注册号需要完整填写')
+      return ElMessage.warning('Complete the expert name, title and credential.')
 
     const payload: ChallengePayload = {
       ...form,
@@ -363,7 +363,7 @@
       } else {
         await createCommunityChallenge(payload)
       }
-      ElMessage.success('挑战已保存')
+      ElMessage.success('Challenge saved.')
       editorVisible.value = false
       await loadChallenges()
     } finally {
@@ -380,6 +380,17 @@
     dayNumber.value = number
     const existing = activeChallenge.value?.days.find((v) => v.dayNumber === number)
     Object.assign(dayForm, blankDay(), existing || {})
+    handleTrackingModeChange()
+  }
+  const handleTrackingModeChange = () => {
+    if (dayForm.trackingMode === 'workout') {
+      dayForm.workoutMetric ||= 'workout_count'
+      if (!dayForm.targetValue || dayForm.targetValue <= 0) dayForm.targetValue = 1
+      return
+    }
+    dayForm.activityCode = ''
+    dayForm.workoutMetric = undefined
+    dayForm.targetValue = undefined
   }
   const saveDay = async () => {
     if (
@@ -388,32 +399,85 @@
       !dayForm.content.trim() ||
       !dayForm.action.trim()
     )
-      return ElMessage.warning('请完整填写当天标题、内容和行动')
+      return ElMessage.warning('Complete the title, content and action for this day.')
+
+    if (
+      dayForm.trackingMode === 'workout' &&
+      (!dayForm.workoutMetric || !dayForm.targetValue || dayForm.targetValue <= 0)
+    ) {
+      return ElMessage.warning('Select a workout metric and enter a target greater than zero.')
+    }
+
+    const payload: Omit<ChallengeDay, 'id' | 'dayNumber'> = {
+      title: dayForm.title.trim(),
+      content: dayForm.content.trim(),
+      action: dayForm.action.trim(),
+      trackingMode: dayForm.trackingMode
+    }
+    if (dayForm.trackingMode === 'workout') {
+      payload.activityCode = dayForm.activityCode?.trim() || undefined
+      payload.workoutMetric = dayForm.workoutMetric
+      payload.targetValue = dayForm.targetValue
+    }
+
     savingDay.value = true
     try {
       activeChallenge.value = await saveCommunityChallengeDay(
         activeChallenge.value.id,
         dayNumber.value,
-        { ...dayForm }
+        payload
       )
-      ElMessage.success(`第 ${dayNumber.value} 天已保存`)
+      ElMessage.success(`Day ${dayNumber.value} saved.`)
       await loadChallenges()
     } finally {
       savingDay.value = false
     }
   }
   const publish = async (item: CommunityChallenge) => {
-    await ElMessageBox.confirm('发布后 Premium 用户即可看到该挑战，确定继续？', '发布挑战')
+    const detail = await fetchCommunityChallenge(item.id)
+    const configuredDays = new Set(detail.days.map((day) => day.dayNumber))
+    const missingDays = Array.from({ length: detail.durationDays }, (_, index) => index + 1).filter(
+      (day) => !configuredDays.has(day)
+    )
+    if (missingDays.length > 0) {
+      ElMessage.warning(`Complete daily content for day(s): ${missingDays.join(', ')}.`)
+      activeChallenge.value = detail
+      dayNumber.value = missingDays[0]
+      selectDay(dayNumber.value)
+      daysVisible.value = true
+      return
+    }
+
+    const invalidWorkoutDay = detail.days.find(
+      (day) =>
+        day.trackingMode === 'workout' &&
+        (!day.workoutMetric || !day.targetValue || day.targetValue <= 0)
+    )
+    if (invalidWorkoutDay) {
+      ElMessage.warning(`Complete the workout metric and target for day ${invalidWorkoutDay.dayNumber}.`)
+      activeChallenge.value = detail
+      dayNumber.value = invalidWorkoutDay.dayNumber
+      selectDay(dayNumber.value)
+      daysVisible.value = true
+      return
+    }
+
+    await ElMessageBox.confirm(
+      'Publishing makes this challenge available to users. Continue?',
+      'Publish Challenge'
+    )
     await publishCommunityChallenge(item.id)
-    ElMessage.success('挑战已发布')
+    ElMessage.success('Challenge published.')
     loadChallenges()
   }
   const archive = async (item: CommunityChallenge) => {
-    await ElMessageBox.confirm('归档后挑战将从用户目录中移除，但参与历史会保留。', '归档挑战', {
-      type: 'warning'
-    })
+    await ElMessageBox.confirm(
+      'Archiving removes the challenge from the user catalog but preserves participation history.',
+      'Archive Challenge',
+      { type: 'warning' }
+    )
     await archiveCommunityChallenge(item.id)
-    ElMessage.success('挑战已归档')
+    ElMessage.success('Challenge archived.')
     loadChallenges()
   }
   const domainLabel = (value: CommunityDomain) =>
@@ -421,11 +485,11 @@
   const contentProgress = (item: CommunityChallenge) =>
     Math.round(Math.min(100, (item.dayCount / item.durationDays) * 100))
   const statusLabel = (value: string) =>
-    ({ draft: '草稿', published: '已发布', archived: '已归档' })[value] || value
+    ({ draft: 'Draft', published: 'Published', archived: 'Archived' })[value] || value
   const statusType = (value: string) =>
     value === 'published' ? 'success' : value === 'archived' ? 'info' : 'warning'
   const formatDate = (value: string) =>
-    new Intl.DateTimeFormat('zh-CN', { dateStyle: 'medium', timeStyle: 'short' }).format(
+    new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(
       new Date(value)
     )
   loadChallenges()
