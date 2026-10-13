@@ -65,7 +65,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (request: InternalAxiosRequestConfig) => {
     const { accessToken } = useUserStore()
-    if (accessToken) request.headers.set('Authorization', accessToken)
+    if (accessToken) request.headers.set('Authorization', authorizationHeader(accessToken))
 
     if (request.data && !(request.data instanceof FormData) && !request.headers['Content-Type']) {
       request.headers.set('Content-Type', 'application/json')
@@ -79,6 +79,12 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error)
   }
 )
+
+/** Accept both raw JWTs and tokens returned with an existing Bearer prefix. */
+function authorizationHeader(token: string): string {
+  const value = token.trim().replace(/^Bearer\s+/i, '')
+  return `Bearer ${value}`
+}
 
 /** 响应拦截器 */
 axiosInstance.interceptors.response.use(
