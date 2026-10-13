@@ -1,0 +1,535 @@
+{
+  "httpMsg": {
+    "unauthorized": "Acesso não autorizado. Entre novamente.",
+    "forbidden": "O acesso a este recurso é proibido",
+    "notFound": "O recurso solicitado não existe",
+    "methodNotAllowed": "Método de solicitação não permitido",
+    "requestTimeout": "Tempo limite excedido. Tente novamente mais tarde.",
+    "internalServerError": "Erro interno do servidor. Tente novamente mais tarde.",
+    "badGateway": "Erro de gateway. Tente novamente mais tarde.",
+    "serviceUnavailable": "Serviço temporariamente indisponível",
+    "gatewayTimeout": "Tempo limite do gateway excedido",
+    "requestCancelled": "Solicitação cancelada",
+    "networkError": "Erro de conexão. Verifique sua rede.",
+    "requestFailed": "Falha na solicitação",
+    "requestConfigError": "Erro na configuração da solicitação"
+  },
+  "topBar": {
+    "search": { "title": "Pesquisar" },
+    "user": {
+      "userCenter": "Perfil",
+      "docs": "Documentação",
+      "github": "GitHub",
+      "lockScreen": "Bloquear tela",
+      "logout": "Sair"
+    },
+    "guide": {
+      "title": "Clique aqui para visualizar",
+      "theme": "Estilo do tema",
+      "menu": "Abrir menu superior",
+      "description": "Mais configurações"
+    }
+  },
+  "common": {
+    "tips": "Aviso",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "logOutTips": "Deseja sair?"
+  },
+  "search": {
+    "placeholder": "Pesquisar página",
+    "historyTitle": "Histórico de pesquisa",
+    "switchKeydown": "Navegar",
+    "selectKeydown": "Selecionar",
+    "exitKeydown": "Fechar"
+  },
+  "setting": {
+    "menuType": { "title": "Layout do menu", "list": ["Vertical", "Horizontal", "Misto", "Duplo"] },
+    "theme": { "title": "Estilo do tema", "list": ["Claro", "Escuro", "Sistema"] },
+    "menu": { "title": "Estilo do menu" },
+    "color": { "title": "Cor do tema" },
+    "box": { "title": "Estilo dos painéis", "list": ["Borda", "Sombra"] },
+    "container": { "title": "Largura do conteúdo", "list": ["Total", "Limitada"] },
+    "basics": {
+      "title": "Configurações básicas",
+      "list": {
+        "multiTab": "Mostrar abas",
+        "accordion": "Menu lateral em acordeão",
+        "collapseSidebar": "Mostrar botão lateral",
+        "reloadPage": "Mostrar botão de atualizar",
+        "fastEnter": "Mostrar acesso rápido",
+        "breadcrumb": "Mostrar navegação estrutural",
+        "language": "Mostrar seletor de idioma",
+        "progressBar": "Mostrar barra de progresso",
+        "weakMode": "Modo para daltonismo",
+        "watermark": "Marca-d'água global",
+        "menuWidth": "Largura do menu",
+        "tabStyle": "Estilo das abas",
+        "pageTransition": "Animação da página",
+        "borderRadius": "Raio das bordas"
+      }
+    },
+    "tabStyle": { "default": "Padrão", "card": "Cartão", "google": "Chrome" },
+    "transition": {
+      "list": {
+        "none": "Nenhuma",
+        "fade": "Suave",
+        "slideLeft": "Deslizar à esquerda",
+        "slideBottom": "Deslizar para cima",
+        "slideTop": "Deslizar para baixo"
+      }
+    },
+    "actions": {
+      "resetConfig": "Redefinir configurações",
+      "copyConfig": "Copiar configurações",
+      "copySuccess": "Configuração copiada",
+      "copyFailed": "Falha ao copiar. Tente novamente.",
+      "resetFailed": "Falha ao redefinir. Atualize a página e tente novamente."
+    }
+  },
+  "notice": {
+    "title": "Notificações",
+    "btnRead": "Marcar como lido",
+    "bar": ["Avisos", "Mensagens", "Tarefas"],
+    "text": ["Nenhum"],
+    "viewAll": "Ver tudo"
+  },
+  "worktab": {
+    "btn": {
+      "refresh": "Atualizar",
+      "fixed": "Fixar",
+      "unfixed": "Desafixar",
+      "closeLeft": "Fechar à esquerda",
+      "closeRight": "Fechar à direita",
+      "closeOther": "Fechar outras",
+      "closeAll": "Fechar todas"
+    }
+  },
+  "login": {
+    "leftView": {
+      "title": "Administração BYND",
+      "subTitle": "Gerencie a comunidade, os dados de saúde e o conteúdo da BYND"
+    },
+    "title": "Bem-vindo de volta",
+    "subTitle": "Digite sua conta e senha para entrar",
+    "roles": { "super": "Superadministrador", "admin": "Administrador", "user": "Usuário" },
+    "placeholder": {
+      "username": "Digite sua conta",
+      "password": "Digite sua senha",
+      "slider": "Deslize para verificar"
+    },
+    "sliderText": "Deslize para verificar",
+    "sliderSuccessText": "Verificação concluída",
+    "rememberPwd": "Lembrar senha",
+    "forgetPwd": "Esqueci a senha",
+    "btnText": "Entrar",
+    "noAccount": "Ainda não tem conta?",
+    "register": "Cadastrar",
+    "success": { "title": "Login realizado", "message": "Bem-vindo de volta" }
+  },
+  "forgetPassword": {
+    "title": "Esqueceu a senha?",
+    "subTitle": "Digite seu e-mail para redefinir a senha",
+    "placeholder": "Digite seu e-mail",
+    "submitBtnText": "Enviar",
+    "backBtnText": "Voltar"
+  },
+  "register": {
+    "title": "Criar conta",
+    "subTitle": "Preencha as informações para concluir o cadastro",
+    "placeholder": {
+      "username": "Digite sua conta",
+      "password": "Digite sua senha",
+      "confirmPassword": "Digite a senha novamente"
+    },
+    "rule": {
+      "confirmPasswordRequired": "Digite a senha novamente",
+      "passwordMismatch": "As senhas não coincidem",
+      "usernameLength": "Use de 3 a 20 caracteres",
+      "passwordLength": "A senha deve ter pelo menos 6 caracteres",
+      "agreementRequired": "Aceite a política de privacidade"
+    },
+    "agreeText": "Eu concordo",
+    "privacyPolicy": "Política de privacidade",
+    "submitBtnText": "Cadastrar",
+    "hasAccount": "Já tem uma conta?",
+    "toLogin": "Entrar"
+  },
+  "lockScreen": {
+    "pwdError": "Senha incorreta",
+    "lock": { "inputPlaceholder": "Digite a senha de bloqueio", "btnText": "Bloquear" },
+    "unlock": {
+      "inputPlaceholder": "Digite a senha para desbloquear",
+      "btnText": "Desbloquear",
+      "backBtnText": "Voltar ao login"
+    }
+  },
+  "greeting": {
+    "dawn": "Bom dia!",
+    "morning": "Bom dia!",
+    "afternoon": "Boa tarde!",
+    "evening": "Boa noite!"
+  },
+  "exceptionPage": {
+    "403": "Você não tem permissão para acessar esta página",
+    "404": "A página solicitada não existe",
+    "500": "Ocorreu um erro no servidor",
+    "gohome": "Ir para o início"
+  },
+  "menus": {
+    "login": { "title": "Entrar" },
+    "register": { "title": "Cadastrar" },
+    "forgetPassword": { "title": "Recuperar senha" },
+    "outside": { "title": "Externo" },
+    "dashboard": { "title": "Painel", "console": "Visão geral" },
+    "community": { "title": "Comunidade", "groups": "Grupos", "challenges": "Desafios" },
+    "wellness": {
+      "title": "Dados de saúde",
+      "sleep": "Gestão do sono",
+      "journals": "Gestão de diários",
+      "heartRate": "Gestão da frequência cardíaca"
+    },
+    "result": { "title": "Resultado", "success": "Sucesso", "fail": "Falha" },
+    "exception": { "title": "Erro", "forbidden": "403", "notFound": "404", "serverError": "500" },
+    "system": {
+      "title": "Configurações",
+      "user": "Usuários",
+      "role": "Funções",
+      "userCenter": "Perfil",
+      "menu": "Menus"
+    }
+  },
+  "wellness": {
+    "common": {
+      "records": "Total de registros",
+      "users": "Usuários",
+      "user": "Usuário",
+      "userSearch": "Pesquisar nome, e-mail ou ID",
+      "date": "Data",
+      "time": "Hora",
+      "startDate": "Data inicial",
+      "endDate": "Data final",
+      "updatedAt": "Atualizado",
+      "quality": "Qualidade dos dados",
+      "actions": "Ações",
+      "detail": "Detalhes",
+      "timezone": "Fuso horário",
+      "device": "Número de série",
+      "duration": "{hours}h {minutes}min"
+    },
+    "quality": { "normal": "Normal", "partial": "Parcial", "missing": "Ausente" },
+    "context": {
+      "continuous": "Contínuo",
+      "manual": "Manual",
+      "workout": "Treino",
+      "sleep": "Sono"
+    },
+    "sleep": {
+      "title": "Gestão do sono",
+      "subtitle": "Revise resumos diários, qualidade dos dados e detalhes das sessões.",
+      "sessionType": "Tipo de sono",
+      "night": "Sono noturno",
+      "nap": "Cochilo",
+      "duration": "Duração do sono",
+      "score": "Pontuação do sono",
+      "stages": "Estágios do sono",
+      "stageValue": "Profundo {deep} min · REM {rem} min",
+      "efficiency": "Eficiência",
+      "averageDuration": "Média de sono",
+      "averageScore": "Pontuação média",
+      "detailTitle": "Detalhes do sono",
+      "averageHeartRate": "Frequência cardíaca média",
+      "spo2": "SpO₂ médio",
+      "sessions": "Sessões de sono",
+      "startedAt": "Início",
+      "wakeCount": "Despertares"
+    },
+    "journals": {
+      "title": "Gestão de diários",
+      "subtitle": "Revise diários por usuário, data e humor.",
+      "searchPlaceholder": "Pesquisar usuário, título ou conteúdo",
+      "titleColumn": "Título",
+      "untitled": "Sem título",
+      "mood": "Humor",
+      "preview": "Prévia",
+      "averageMood": "Humor médio",
+      "moodCoverage": "Cobertura de humor",
+      "detailTitle": "Detalhes do diário",
+      "moods": { "1": "Muito baixo", "2": "Baixo", "3": "Neutro", "4": "Bom", "5": "Ótimo" }
+    },
+    "heartRate": {
+      "title": "Gestão da frequência cardíaca",
+      "subtitle": "Revise resumos diários, qualidade dos dados e amostras.",
+      "context": "Contexto da amostra",
+      "average": "Frequência média",
+      "averageResting": "Repouso médio",
+      "range": "Faixa cardíaca",
+      "resting": "Frequência em repouso",
+      "samples": "Amostras",
+      "hrv": "VFC",
+      "detailTitle": "Detalhes da frequência cardíaca",
+      "latestSamples": "Amostras mais recentes ({count})"
+    }
+  },
+  "content": {
+    "menu": { "title": "Conteúdo", "reading": "Leitura", "guidance": "Orientação" },
+    "languages": { "zh": "Chinês", "en": "Inglês", "pt": "Português" },
+    "status": { "draft": "Rascunho", "published": "Publicado", "archived": "Arquivado" },
+    "common": {
+      "status": "Status",
+      "actions": "Ações",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "archive": "Arquivar",
+      "save": "Salvar",
+      "yes": "Sim",
+      "no": "Não",
+      "enabled": "Ativo",
+      "sort": "Ordem",
+      "icon": "Ícone",
+      "color": "Cor",
+      "title": "Título",
+      "subtitle": "Subtítulo",
+      "summary": "Resumo",
+      "description": "Descrição",
+      "name": "Nome",
+      "translations": "Conteúdo localizado",
+      "enabledLanguages": "Idiomas",
+      "defaultLanguage": "Idioma padrão",
+      "createdAt": "Criado",
+      "updatedAt": "Atualizado"
+    },
+    "reading": {
+      "title": "Gestão de leitura",
+      "subtitle": "Gerencie categorias, destaques, artigos, e-books e arquivos.",
+      "publications": "Livros e artigos",
+      "categories": "Categorias",
+      "assets": "Arquivos",
+      "newPublication": "Novo conteúdo",
+      "editPublication": "Editar conteúdo",
+      "newCategory": "Nova categoria",
+      "editCategory": "Editar categoria",
+      "book": "Conteúdo",
+      "type": "Tipo",
+      "category": "Categoria",
+      "recommended": "Destaque",
+      "author": "Autor",
+      "publisher": "Editora",
+      "readMinutes": "Minutos de leitura",
+      "access": "Acesso",
+      "free": "Grátis",
+      "premium": "Premium",
+      "cover": "Capa",
+      "body": "Corpo",
+      "bodyPlaceholder": "Escreva o artigo",
+      "keywords": "Palavras-chave",
+      "epubFile": "Arquivo EPUB",
+      "uploadCover": "Enviar capa",
+      "uploadEpub": "Enviar EPUB",
+      "file": "Arquivo",
+      "assetType": "Tipo de arquivo",
+      "types": { "article": "Artigo", "epub": "E-book" },
+      "archiveConfirm": "Arquivar remove este conteúdo do catálogo. Continuar?",
+      "deleteCategoryConfirm": "Somente categorias sem uso podem ser excluídas. Continuar?",
+      "deleteAssetConfirm": "Somente arquivos sem referências podem ser excluídos. Continuar?"
+    },
+    "guidance": {
+      "title": "Orientação de 14 dias",
+      "subtitle": "Gerencie o programa Body Foundations, as lições localizadas e os destinos no app.",
+      "saveProgram": "Salvar programa",
+      "programSettings": "Configurações do programa",
+      "dayContent": "Conteúdo diário",
+      "configured": "{count} de {total} dias configurados",
+      "day": "Dia",
+      "dayNumber": "Dia {day}",
+      "notConfigured": "Não configurado",
+      "noRoute": "Sem destino",
+      "editDay": "Editar dia {day}",
+      "actionRoute": "Rota do app",
+      "actionText": "Texto da ação",
+      "lessonContent": "Conteúdo da lição",
+      "contentPlaceholder": "Escreva a lição completa",
+      "routeTip": "As rotas são interpretadas pelo app, por exemplo /sleep ou /heart-rate."
+    },
+    "validation": {
+      "required": "Preencha todos os campos obrigatórios",
+      "defaultTranslation": "O idioma padrão exige título e descrição"
+    },
+    "messages": { "saved": "Salvo", "deleted": "Excluído", "archived": "Arquivado" }
+  },
+  "groupAdmin": {
+    "eyebrow": "COMUNIDADE BYND",
+    "title": "Gestão de grupos",
+    "subtitle": "Acompanhe grupos criados pelos usuários, participação e atividade da comunidade.",
+    "refresh": "Atualizar",
+    "stats": {
+      "groups": "Grupos",
+      "members": "Membros ativos",
+      "goals": "Metas dos grupos",
+      "messages": "Mensagens do chat"
+    },
+    "filters": {
+      "keyword": "Pesquisar nome ou ID numérico",
+      "visibility": "Visibilidade",
+      "status": "Status",
+      "search": "Pesquisar",
+      "reset": "Redefinir"
+    },
+    "visibility": {
+      "public": "Público",
+      "private": "Privado",
+      "publicGroup": "Grupo público",
+      "privateGroup": "Grupo privado"
+    },
+    "status": { "active": "Ativo", "archived": "Arquivado" },
+    "columns": {
+      "group": "Grupo",
+      "owner": "Proprietário",
+      "type": "Tipo",
+      "members": "Membros",
+      "goals": "Metas",
+      "messages": "Mensagens",
+      "status": "Status",
+      "created": "Criado",
+      "actions": "Ações"
+    },
+    "details": "Detalhes",
+    "empty": "Nenhum grupo encontrado",
+    "detailTitle": "Detalhes do grupo",
+    "groupId": "ID do grupo {id}",
+    "noDescription": "Sem descrição do grupo",
+    "unknown": "Desconhecido",
+    "activeMembers": "Membros ativos",
+    "totalGoals": "Total de metas",
+    "validMessages": "Mensagens válidas",
+    "loadFailed": "Falha ao carregar os grupos"
+  },
+  "challengeAdmin": {
+    "eyebrow": "COMUNIDADE BYND",
+    "title": "Gestão de desafios",
+    "subtitle": "Crie e gerencie os desafios BYND e seus conteúdos diários.",
+    "create": "Criar desafio",
+    "edit": "Editar desafio",
+    "stats": {
+      "all": "Todos os desafios",
+      "published": "Publicados",
+      "drafts": "Rascunhos",
+      "participants": "Participantes"
+    },
+    "filters": {
+      "keyword": "Pesquisar título ou slug",
+      "domain": "Área",
+      "status": "Status",
+      "search": "Pesquisar",
+      "reset": "Redefinir"
+    },
+    "columns": {
+      "challenge": "Desafio",
+      "progress": "Progresso do conteúdo",
+      "participants": "Participantes",
+      "status": "Status",
+      "updated": "Atualizado",
+      "actions": "Ações"
+    },
+    "actions": {
+      "edit": "Editar",
+      "dailyContent": "Conteúdo diário",
+      "publish": "Publicar",
+      "archive": "Arquivar",
+      "cancel": "Cancelar",
+      "save": "Salvar"
+    },
+    "empty": "Nenhum desafio",
+    "daysUnit": "{count} dias",
+    "status": { "draft": "Rascunho", "published": "Publicado", "archived": "Arquivado" },
+    "domains": {
+      "body": "Corpo",
+      "mind": "Mente",
+      "sleep_recovery": "Sono e recuperação",
+      "nutrition_metabolism": "Nutrição e metabolismo",
+      "longevity": "Longevidade",
+      "sustainable_performance": "Desempenho sustentável",
+      "life_wellbeing": "Vida e bem-estar"
+    },
+    "form": {
+      "name": "Nome do desafio",
+      "slug": "Slug",
+      "domain": "Área",
+      "duration": "Duração (dias)",
+      "sortOrder": "Ordem",
+      "summary": "Resumo",
+      "description": "Descrição",
+      "coverUrl": "URL da capa",
+      "availableFrom": "Disponível a partir de",
+      "availableUntil": "Disponível até"
+    },
+    "expert": {
+      "title": "Colaboração com especialista",
+      "hint": "Quando ativado, nome, cargo e credencial são obrigatórios.",
+      "name": "Nome",
+      "role": "Cargo",
+      "credential": "Credencial / Registro",
+      "avatarUrl": "URL do avatar"
+    },
+    "daily": {
+      "title": "Conteúdo diário",
+      "configured": "{configured} / {total} dias configurados",
+      "day": "Dia {day}",
+      "titleField": "Título",
+      "content": "Conteúdo",
+      "action": "Ação diária",
+      "trackingMethod": "Método de acompanhamento",
+      "manual": "Conclusão manual",
+      "workout": "Treino verificado",
+      "workoutMetric": "Métrica do treino",
+      "activityCode": "Código da atividade",
+      "activityCodeHint": "Deixe em branco para todos os treinos",
+      "targetValue": "Valor-alvo",
+      "saveDay": "Salvar dia {day}"
+    },
+    "metrics": {
+      "workout_count": "Quantidade de treinos",
+      "active_minutes": "Minutos ativos",
+      "distance_km": "Distância (km)",
+      "calories": "Calorias",
+      "steps": "Passos"
+    },
+    "validation": {
+      "challengeRequired": "Informe o nome, o slug e a descrição.",
+      "expertRequired": "Preencha o nome, o cargo e a credencial do especialista.",
+      "dayRequired": "Preencha o título, o conteúdo e a ação deste dia.",
+      "workoutRequired": "Selecione uma métrica e informe um alvo maior que zero.",
+      "missingDays": "Preencha o conteúdo dos dias: {days}.",
+      "invalidWorkoutDay": "Preencha a métrica e o alvo do dia {day}."
+    },
+    "messages": {
+      "saved": "Desafio salvo.",
+      "daySaved": "Dia {day} salvo.",
+      "published": "Desafio publicado.",
+      "archived": "Desafio arquivado."
+    },
+    "confirm": {
+      "publishTitle": "Publicar desafio",
+      "publishText": "A publicação disponibiliza este desafio aos usuários. Continuar?",
+      "archiveTitle": "Arquivar desafio",
+      "archiveText": "O desafio será removido do catálogo, mas o histórico de participação será preservado."
+    }
+  },
+  "table": {
+    "form": { "reset": "Redefinir", "submit": "Enviar" },
+    "searchBar": {
+      "reset": "Redefinir",
+      "search": "Pesquisar",
+      "expand": "Expandir",
+      "collapse": "Recolher",
+      "searchInputPlaceholder": "Digite",
+      "searchSelectPlaceholder": "Selecione"
+    },
+    "selection": "Selecionar",
+    "sizeOptions": { "small": "Compacto", "default": "Padrão", "large": "Amplo" },
+    "column": { "selection": "Selecionar", "expand": "Expandir", "index": "Índice" },
+    "zebra": "Listrado",
+    "border": "Borda",
+    "headerBackground": "Fundo do cabeçalho"
+  }
+}

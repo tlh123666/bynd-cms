@@ -32,8 +32,7 @@ export function useHeaderBar() {
   const headerBarConfigRef = computed<HeaderBarFeatureConfig>(() => headerBarConfig)
 
   // 从store中获取相关状态
-  const { showMenuButton, showFastEnter, showRefreshButton, showCrumbs, showLanguage } =
-    storeToRefs(settingStore)
+  const { showMenuButton, showFastEnter, showRefreshButton, showCrumbs } = storeToRefs(settingStore)
 
   /**
    * 检查特定功能是否启用
@@ -95,7 +94,7 @@ export function useHeaderBar() {
 
   // 检查语言切换是否显示
   const shouldShowLanguage = computed(() => {
-    return isFeatureEnabled('language') && showLanguage.value
+    return isFeatureEnabled('language')
   })
 
   // 检查设置面板是否显示

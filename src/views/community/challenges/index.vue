@@ -2,25 +2,29 @@
   <div class="challenge-page">
     <div class="page-heading">
       <div>
-        <p class="eyebrow">BYND COMMUNITY</p>
-        <h1>Challenge Management</h1>
-        <p>Create and manage BYND challenges and their daily content.</p>
+        <p class="eyebrow">{{ t('challengeAdmin.eyebrow') }}</p>
+        <h1>{{ t('challengeAdmin.title') }}</h1>
+        <p>{{ t('challengeAdmin.subtitle') }}</p>
       </div>
-      <ElButton type="primary" @click="openEditor()">Create Challenge</ElButton>
+      <ElButton type="primary" @click="openEditor()">{{ t('challengeAdmin.create') }}</ElButton>
     </div>
 
     <div class="stat-grid">
       <div class="stat-card"
-        ><span>All Challenges</span><strong>{{ challenges.length }}</strong></div
+        ><span>{{ t('challengeAdmin.stats.all') }}</span
+        ><strong>{{ challenges.length }}</strong></div
       >
       <div class="stat-card"
-        ><span>Published</span><strong>{{ statusCount.published }}</strong></div
+        ><span>{{ t('challengeAdmin.stats.published') }}</span
+        ><strong>{{ statusCount.published }}</strong></div
       >
       <div class="stat-card"
-        ><span>Drafts</span><strong>{{ statusCount.draft }}</strong></div
+        ><span>{{ t('challengeAdmin.stats.drafts') }}</span
+        ><strong>{{ statusCount.draft }}</strong></div
       >
       <div class="stat-card"
-        ><span>Participants</span><strong>{{ enrollmentTotal }}</strong></div
+        ><span>{{ t('challengeAdmin.stats.participants') }}</span
+        ><strong>{{ enrollmentTotal }}</strong></div
       >
     </div>
 
@@ -29,10 +33,14 @@
         <ElInput
           v-model="filters.keyword"
           clearable
-          placeholder="Search title or slug"
+          :placeholder="t('challengeAdmin.filters.keyword')"
           @keyup.enter="loadChallenges"
         />
-        <ElSelect v-model="filters.domain" clearable placeholder="Domain">
+        <ElSelect
+          v-model="filters.domain"
+          clearable
+          :placeholder="t('challengeAdmin.filters.domain')"
+        >
           <ElOption
             v-for="item in domains"
             :key="item.value"
@@ -40,74 +48,94 @@
             :value="item.value"
           />
         </ElSelect>
-        <ElSelect v-model="filters.status" clearable placeholder="Status">
-          <ElOption label="Draft" value="draft" /><ElOption
-            label="Published"
+        <ElSelect
+          v-model="filters.status"
+          clearable
+          :placeholder="t('challengeAdmin.filters.status')"
+        >
+          <ElOption :label="t('challengeAdmin.status.draft')" value="draft" /><ElOption
+            :label="t('challengeAdmin.status.published')"
             value="published"
-          /><ElOption label="Archived" value="archived" />
+          /><ElOption :label="t('challengeAdmin.status.archived')" value="archived" />
         </ElSelect>
-        <ElButton type="primary" @click="loadChallenges">Search</ElButton>
-        <ElButton @click="resetFilters">Reset</ElButton>
+        <ElButton type="primary" @click="loadChallenges">{{
+          t('challengeAdmin.filters.search')
+        }}</ElButton>
+        <ElButton @click="resetFilters">{{ t('challengeAdmin.filters.reset') }}</ElButton>
       </div>
 
       <ElTable v-loading="loading" :data="challenges" row-key="id">
-        <ElTableColumn label="Challenge" min-width="300">
+        <ElTableColumn :label="t('challengeAdmin.columns.challenge')" min-width="300">
           <template #default="{ row }">
             <div class="challenge-cell">
               <ElImage v-if="row.coverUrl" :src="row.coverUrl" fit="cover" class="cover" />
               <div v-else class="cover placeholder">BYND</div>
               <div
                 ><strong>{{ row.title }}</strong
-                ><small>{{ domainLabel(row.domain) }} · {{ row.durationDays }} days</small></div
+                ><small
+                  >{{ domainLabel(row.domain) }} ·
+                  {{ t('challengeAdmin.daysUnit', { count: row.durationDays }) }}</small
+                ></div
               >
             </div>
           </template>
         </ElTableColumn>
-        <ElTableColumn label="Content Progress" width="170">
+        <ElTableColumn :label="t('challengeAdmin.columns.progress')" width="170">
           <template #default="{ row }"
             ><ElProgress :percentage="contentProgress(row)" :stroke-width="7"
           /></template>
         </ElTableColumn>
-        <ElTableColumn prop="enrollmentCount" label="Participants" width="110" />
-        <ElTableColumn label="Status" width="110">
+        <ElTableColumn
+          prop="enrollmentCount"
+          :label="t('challengeAdmin.columns.participants')"
+          width="110"
+        />
+        <ElTableColumn :label="t('challengeAdmin.columns.status')" width="110">
           <template #default="{ row }"
             ><ElTag :type="statusType(row.status)">{{ statusLabel(row.status) }}</ElTag></template
           >
         </ElTableColumn>
-        <ElTableColumn label="Updated" width="180">
+        <ElTableColumn :label="t('challengeAdmin.columns.updated')" width="180">
           <template #default="{ row }">{{ formatDate(row.updatedAt) }}</template>
         </ElTableColumn>
-        <ElTableColumn label="Actions" width="280" fixed="right">
+        <ElTableColumn :label="t('challengeAdmin.columns.actions')" width="280" fixed="right">
           <template #default="{ row }">
-            <ElButton link type="primary" @click="openEditor(row)">Edit</ElButton>
-            <ElButton link type="primary" @click="openDays(row)">Daily Content</ElButton>
-            <ElButton v-if="row.status === 'draft'" link type="success" @click="publish(row)"
-              >Publish</ElButton
-            >
-            <ElButton v-if="row.status !== 'archived'" link type="danger" @click="archive(row)"
-              >Archive</ElButton
-            >
+            <ElButton link type="primary" @click="openEditor(row)">{{
+              t('challengeAdmin.actions.edit')
+            }}</ElButton>
+            <ElButton link type="primary" @click="openDays(row)">{{
+              t('challengeAdmin.actions.dailyContent')
+            }}</ElButton>
+            <ElButton v-if="row.status === 'draft'" link type="success" @click="publish(row)">{{
+              t('challengeAdmin.actions.publish')
+            }}</ElButton>
+            <ElButton v-if="row.status !== 'archived'" link type="danger" @click="archive(row)">{{
+              t('challengeAdmin.actions.archive')
+            }}</ElButton>
           </template>
         </ElTableColumn>
       </ElTable>
-      <ElEmpty v-if="!loading && challenges.length === 0" description="No challenges" />
+      <ElEmpty
+        v-if="!loading && challenges.length === 0"
+        :description="t('challengeAdmin.empty')"
+      />
     </ElCard>
 
     <ElDrawer
       v-model="editorVisible"
-      :title="editingId ? 'Edit Challenge' : 'Create Challenge'"
+      :title="editingId ? t('challengeAdmin.edit') : t('challengeAdmin.create')"
       size="620px"
       destroy-on-close
     >
       <ElForm label-position="top" :model="form">
         <div class="form-grid">
-          <ElFormItem label="Challenge Name" class="wide"
+          <ElFormItem :label="t('challengeAdmin.form.name')" class="wide"
             ><ElInput v-model="form.title" maxlength="180" show-word-limit
           /></ElFormItem>
-          <ElFormItem label="Slug"
+          <ElFormItem :label="t('challengeAdmin.form.slug')"
             ><ElInput v-model="form.slug" placeholder="7-day-mobility"
           /></ElFormItem>
-          <ElFormItem label="Domain"
+          <ElFormItem :label="t('challengeAdmin.form.domain')"
             ><ElSelect v-model="form.domain"
               ><ElOption
                 v-for="item in domains"
@@ -115,11 +143,13 @@
                 :label="item.label"
                 :value="item.value" /></ElSelect
           ></ElFormItem>
-          <ElFormItem label="Duration (days)"
+          <ElFormItem :label="t('challengeAdmin.form.duration')"
             ><ElInputNumber v-model="form.durationDays" :min="1" :max="365"
           /></ElFormItem>
-          <ElFormItem label="Sort Order"><ElInputNumber v-model="form.sortOrder" :min="0" /></ElFormItem>
-          <ElFormItem label="Summary" class="wide"
+          <ElFormItem :label="t('challengeAdmin.form.sortOrder')"
+            ><ElInputNumber v-model="form.sortOrder" :min="0"
+          /></ElFormItem>
+          <ElFormItem :label="t('challengeAdmin.form.summary')" class="wide"
             ><ElInput
               v-model="form.summary"
               type="textarea"
@@ -127,7 +157,7 @@
               maxlength="500"
               show-word-limit
           /></ElFormItem>
-          <ElFormItem label="Description" class="wide"
+          <ElFormItem :label="t('challengeAdmin.form.description')" class="wide"
             ><ElInput
               v-model="form.description"
               type="textarea"
@@ -135,14 +165,16 @@
               maxlength="10000"
               show-word-limit
           /></ElFormItem>
-          <ElFormItem label="Cover URL" class="wide"><ElInput v-model="form.coverUrl" /></ElFormItem>
-          <ElFormItem label="Available From"
+          <ElFormItem :label="t('challengeAdmin.form.coverUrl')" class="wide"
+            ><ElInput v-model="form.coverUrl"
+          /></ElFormItem>
+          <ElFormItem :label="t('challengeAdmin.form.availableFrom')"
             ><ElDatePicker
               v-model="form.availableFrom"
               type="datetime"
               value-format="YYYY-MM-DDTHH:mm:ssZ"
           /></ElFormItem>
-          <ElFormItem label="Available Until"
+          <ElFormItem :label="t('challengeAdmin.form.availableUntil')"
             ><ElDatePicker
               v-model="form.availableUntil"
               type="datetime"
@@ -152,34 +184,50 @@
         <ElDivider />
         <div class="expert-heading">
           <div>
-            <strong>Expert Collaboration</strong>
-            <small>When enabled, name, title and credential are required.</small>
+            <strong>{{ t('challengeAdmin.expert.title') }}</strong>
+            <small>{{ t('challengeAdmin.expert.hint') }}</small>
           </div>
           <ElSwitch v-model="expertEnabled" />
         </div>
         <div v-if="expertEnabled" class="form-grid">
-          <ElFormItem label="Name" required><ElInput v-model="form.expertName" /></ElFormItem>
-          <ElFormItem label="Title" required><ElInput v-model="form.expertTitle" /></ElFormItem>
-          <ElFormItem label="Credential / Registration" required
+          <ElFormItem :label="t('challengeAdmin.expert.name')" required
+            ><ElInput v-model="form.expertName"
+          /></ElFormItem>
+          <ElFormItem :label="t('challengeAdmin.expert.role')" required
+            ><ElInput v-model="form.expertTitle"
+          /></ElFormItem>
+          <ElFormItem :label="t('challengeAdmin.expert.credential')" required
             ><ElInput v-model="form.expertCredential"
           /></ElFormItem>
-          <ElFormItem label="Avatar URL"><ElInput v-model="form.expertAvatarUrl" /></ElFormItem>
+          <ElFormItem :label="t('challengeAdmin.expert.avatarUrl')"
+            ><ElInput v-model="form.expertAvatarUrl"
+          /></ElFormItem>
         </div>
       </ElForm>
       <template #footer
-        ><ElButton @click="editorVisible = false">Cancel</ElButton
-        ><ElButton type="primary" :loading="saving" @click="saveChallenge">Save</ElButton></template
+        ><ElButton @click="editorVisible = false">{{ t('challengeAdmin.actions.cancel') }}</ElButton
+        ><ElButton type="primary" :loading="saving" @click="saveChallenge">{{
+          t('challengeAdmin.actions.save')
+        }}</ElButton></template
       >
     </ElDrawer>
 
-    <ElDrawer v-model="daysVisible" title="Daily Content" size="680px" destroy-on-close>
+    <ElDrawer
+      v-model="daysVisible"
+      :title="t('challengeAdmin.daily.title')"
+      size="680px"
+      destroy-on-close
+    >
       <template v-if="activeChallenge">
         <div class="days-head"
           ><div
             ><h2>{{ activeChallenge.title }}</h2
-            ><p
-              >Configured {{ activeChallenge.dayCount }} / {{ activeChallenge.durationDays }} days</p
-            ></div
+            ><p>{{
+              t('challengeAdmin.daily.configured', {
+                configured: activeChallenge.dayCount,
+                total: activeChallenge.durationDays
+              })
+            }}</p></div
           ><ElTag>{{ domainLabel(activeChallenge.domain) }}</ElTag></div
         >
         <div class="day-selector">
@@ -189,39 +237,47 @@
             :type="dayNumber === day ? 'primary' : undefined"
             :plain="dayNumber !== day"
             @click="selectDay(day)"
-            >Day {{ day }}</ElButton
+            >{{ t('challengeAdmin.daily.day', { day }) }}</ElButton
           >
         </div>
         <ElForm label-position="top" :model="dayForm">
-          <ElFormItem label="Title"><ElInput v-model="dayForm.title" maxlength="180" /></ElFormItem>
-          <ElFormItem label="Content"
+          <ElFormItem :label="t('challengeAdmin.daily.titleField')"
+            ><ElInput v-model="dayForm.title" maxlength="180"
+          /></ElFormItem>
+          <ElFormItem :label="t('challengeAdmin.daily.content')"
             ><ElInput v-model="dayForm.content" type="textarea" :rows="7" maxlength="20000"
           /></ElFormItem>
-          <ElFormItem label="Daily Action"
+          <ElFormItem :label="t('challengeAdmin.daily.action')"
             ><ElInput v-model="dayForm.action" type="textarea" :rows="2" maxlength="500"
           /></ElFormItem>
           <div class="form-grid">
-            <ElFormItem label="Tracking Method"
+            <ElFormItem :label="t('challengeAdmin.daily.trackingMethod')"
               ><ElSelect v-model="dayForm.trackingMode" @change="handleTrackingModeChange"
-                ><ElOption label="Manual completion" value="manual" /><ElOption
-                  label="Verified workout"
+                ><ElOption :label="t('challengeAdmin.daily.manual')" value="manual" /><ElOption
+                  :label="t('challengeAdmin.daily.workout')"
                   value="workout" /></ElSelect
             ></ElFormItem>
             <template v-if="dayForm.trackingMode === 'workout'">
-              <ElFormItem label="Workout Metric" required
+              <ElFormItem :label="t('challengeAdmin.daily.workoutMetric')" required
                 ><ElSelect v-model="dayForm.workoutMetric"
-                  ><ElOption label="Workout count" value="workout_count" /><ElOption
-                    label="Active minutes"
+                  ><ElOption
+                    :label="t('challengeAdmin.metrics.workout_count')"
+                    value="workout_count" /><ElOption
+                    :label="t('challengeAdmin.metrics.active_minutes')"
                     value="active_minutes" /><ElOption
-                    label="Distance (km)"
-                    value="distance_km" /><ElOption label="Calories" value="calories" /><ElOption
-                    label="Steps"
+                    :label="t('challengeAdmin.metrics.distance_km')"
+                    value="distance_km" /><ElOption
+                    :label="t('challengeAdmin.metrics.calories')"
+                    value="calories" /><ElOption
+                    :label="t('challengeAdmin.metrics.steps')"
                     value="steps" /></ElSelect
               ></ElFormItem>
-              <ElFormItem label="Activity Code"
-                ><ElInput v-model="dayForm.activityCode" placeholder="Leave blank for all workouts"
+              <ElFormItem :label="t('challengeAdmin.daily.activityCode')"
+                ><ElInput
+                  v-model="dayForm.activityCode"
+                  :placeholder="t('challengeAdmin.daily.activityCodeHint')"
               /></ElFormItem>
-              <ElFormItem label="Target Value" required
+              <ElFormItem :label="t('challengeAdmin.daily.targetValue')" required
                 ><ElInputNumber v-model="dayForm.targetValue" :min="0.01"
               /></ElFormItem>
             </template>
@@ -229,9 +285,9 @@
         </ElForm>
       </template>
       <template #footer
-        ><ElButton type="primary" :loading="savingDay" @click="saveDay"
-          >Save Day {{ dayNumber }}</ElButton
-        ></template
+        ><ElButton type="primary" :loading="savingDay" @click="saveDay">{{
+          t('challengeAdmin.daily.saveDay', { day: dayNumber })
+        }}</ElButton></template
       >
     </ElDrawer>
   </div>
@@ -239,6 +295,7 @@
 
 <script setup lang="ts">
   import { computed, reactive, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import {
     archiveCommunityChallenge,
@@ -255,15 +312,19 @@
   } from '@/api/community'
 
   defineOptions({ name: 'CommunityChallenges' })
-  const domains: { value: CommunityDomain; label: string }[] = [
-    { value: 'body', label: 'Body' },
-    { value: 'mind', label: 'Mind' },
-    { value: 'sleep_recovery', label: 'Sleep & Recovery' },
-    { value: 'nutrition_metabolism', label: 'Nutrition & Metabolism' },
-    { value: 'longevity', label: 'Longevity' },
-    { value: 'sustainable_performance', label: 'Sustainable Performance' },
-    { value: 'life_wellbeing', label: 'Life & Wellbeing' }
+  const { t, locale } = useI18n()
+  const domainValues: CommunityDomain[] = [
+    'body',
+    'mind',
+    'sleep_recovery',
+    'nutrition_metabolism',
+    'longevity',
+    'sustainable_performance',
+    'life_wellbeing'
   ]
+  const domains = computed(() =>
+    domainValues.map((value) => ({ value, label: t(`challengeAdmin.domains.${value}`) }))
+  )
   const blankForm = (): ChallengePayload => ({
     slug: '',
     title: '',
@@ -338,12 +399,12 @@
   }
   const saveChallenge = async () => {
     if (!form.title.trim() || !form.slug.trim() || !form.description.trim())
-      return ElMessage.warning('Enter a name, slug and description.')
+      return ElMessage.warning(t('challengeAdmin.validation.challengeRequired'))
     if (
       expertEnabled.value &&
       (!form.expertName.trim() || !form.expertTitle.trim() || !form.expertCredential.trim())
     )
-      return ElMessage.warning('Complete the expert name, title and credential.')
+      return ElMessage.warning(t('challengeAdmin.validation.expertRequired'))
 
     const payload: ChallengePayload = {
       ...form,
@@ -363,7 +424,7 @@
       } else {
         await createCommunityChallenge(payload)
       }
-      ElMessage.success('Challenge saved.')
+      ElMessage.success(t('challengeAdmin.messages.saved'))
       editorVisible.value = false
       await loadChallenges()
     } finally {
@@ -399,13 +460,13 @@
       !dayForm.content.trim() ||
       !dayForm.action.trim()
     )
-      return ElMessage.warning('Complete the title, content and action for this day.')
+      return ElMessage.warning(t('challengeAdmin.validation.dayRequired'))
 
     if (
       dayForm.trackingMode === 'workout' &&
       (!dayForm.workoutMetric || !dayForm.targetValue || dayForm.targetValue <= 0)
     ) {
-      return ElMessage.warning('Select a workout metric and enter a target greater than zero.')
+      return ElMessage.warning(t('challengeAdmin.validation.workoutRequired'))
     }
 
     const payload: Omit<ChallengeDay, 'id' | 'dayNumber'> = {
@@ -427,7 +488,7 @@
         dayNumber.value,
         payload
       )
-      ElMessage.success(`Day ${dayNumber.value} saved.`)
+      ElMessage.success(t('challengeAdmin.messages.daySaved', { day: dayNumber.value }))
       await loadChallenges()
     } finally {
       savingDay.value = false
@@ -440,7 +501,9 @@
       (day) => !configuredDays.has(day)
     )
     if (missingDays.length > 0) {
-      ElMessage.warning(`Complete daily content for day(s): ${missingDays.join(', ')}.`)
+      ElMessage.warning(
+        t('challengeAdmin.validation.missingDays', { days: missingDays.join(', ') })
+      )
       activeChallenge.value = detail
       dayNumber.value = missingDays[0]
       selectDay(dayNumber.value)
@@ -454,7 +517,9 @@
         (!day.workoutMetric || !day.targetValue || day.targetValue <= 0)
     )
     if (invalidWorkoutDay) {
-      ElMessage.warning(`Complete the workout metric and target for day ${invalidWorkoutDay.dayNumber}.`)
+      ElMessage.warning(
+        t('challengeAdmin.validation.invalidWorkoutDay', { day: invalidWorkoutDay.dayNumber })
+      )
       activeChallenge.value = detail
       dayNumber.value = invalidWorkoutDay.dayNumber
       selectDay(dayNumber.value)
@@ -463,35 +528,36 @@
     }
 
     await ElMessageBox.confirm(
-      'Publishing makes this challenge available to users. Continue?',
-      'Publish Challenge'
+      t('challengeAdmin.confirm.publishText'),
+      t('challengeAdmin.confirm.publishTitle')
     )
     await publishCommunityChallenge(item.id)
-    ElMessage.success('Challenge published.')
+    ElMessage.success(t('challengeAdmin.messages.published'))
     loadChallenges()
   }
   const archive = async (item: CommunityChallenge) => {
     await ElMessageBox.confirm(
-      'Archiving removes the challenge from the user catalog but preserves participation history.',
-      'Archive Challenge',
+      t('challengeAdmin.confirm.archiveText'),
+      t('challengeAdmin.confirm.archiveTitle'),
       { type: 'warning' }
     )
     await archiveCommunityChallenge(item.id)
-    ElMessage.success('Challenge archived.')
+    ElMessage.success(t('challengeAdmin.messages.archived'))
     loadChallenges()
   }
   const domainLabel = (value: CommunityDomain) =>
-    domains.find((v) => v.value === value)?.label || value
+    domains.value.find((v) => v.value === value)?.label || value
   const contentProgress = (item: CommunityChallenge) =>
     Math.round(Math.min(100, (item.dayCount / item.durationDays) * 100))
   const statusLabel = (value: string) =>
-    ({ draft: 'Draft', published: 'Published', archived: 'Archived' })[value] || value
+    ['draft', 'published', 'archived'].includes(value) ? t(`challengeAdmin.status.${value}`) : value
   const statusType = (value: string) =>
     value === 'published' ? 'success' : value === 'archived' ? 'info' : 'warning'
   const formatDate = (value: string) =>
-    new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(
-      new Date(value)
-    )
+    new Intl.DateTimeFormat(
+      locale.value === 'zh' ? 'zh-CN' : locale.value === 'pt' ? 'pt-BR' : 'en-US',
+      { dateStyle: 'medium', timeStyle: 'short' }
+    ).format(new Date(value))
   loadChallenges()
 </script>
 

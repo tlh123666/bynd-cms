@@ -24,17 +24,23 @@
 import { createI18n } from 'vue-i18n'
 import type { I18n, I18nOptions } from 'vue-i18n'
 import { LanguageEnum } from '@/enums/appEnum'
+import { getSystemStorage } from '@/utils/storage'
+import { StorageKeyManager } from '@/utils/storage/storage-key-manager'
 
 // 同步导入语言文件
 import enMessages from './langs/en.json'
 import zhMessages from './langs/zh.json'
+import ptMessages from './langs/pt.json'
+
+const storageKeyManager = new StorageKeyManager()
 
 /**
  * 语言消息对象
  */
 const messages = {
   [LanguageEnum.EN]: enMessages,
-  [LanguageEnum.ZH]: zhMessages
+  [LanguageEnum.ZH]: zhMessages,
+  [LanguageEnum.PT]: ptMessages
 }
 
 /**
@@ -42,7 +48,9 @@ const messages = {
  * 用于语言切换下拉框
  */
 export const languageOptions = [
-  { value: LanguageEnum.EN, label: 'English' }
+  { value: LanguageEnum.EN, label: 'English' },
+  { value: LanguageEnum.PT, label: 'Português' },
+  { value: LanguageEnum.ZH, label: '中文' }
 ]
 
 /**
@@ -50,6 +58,27 @@ export const languageOptions = [
  * @returns 语言设置，如果获取失败则返回默认语言
  */
 const getDefaultLanguage = (): LanguageEnum => {
+  try {
+    const storageKey = storageKeyManager.getStorageKey('user')
+    const userStore = localStorage.getItem(storageKey)
+    if (userStore) {
+      const { language } = JSON.parse(userStore)
+      if (Object.values(LanguageEnum).includes(language)) return language
+    }
+  } catch (error) {
+    console.warn('[i18n] Failed to restore the saved language:', error)
+  }
+
+  try {
+    const systemStorage = getSystemStorage()
+    if (systemStorage) {
+      const { user } = JSON.parse(systemStorage)
+      if (Object.values(LanguageEnum).includes(user?.language)) return user.language
+    }
+  } catch (error) {
+    console.warn('[i18n] Failed to restore the system language:', error)
+  }
+
   return LanguageEnum.EN
 }
 
