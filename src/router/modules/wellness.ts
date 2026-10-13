@@ -17,8 +17,18 @@ export const wellnessRoutes: AppRouteRecord = {
       meta: { title: 'menus.wellness.sleep', icon: 'ri:moon-line', keepAlive: true }
     },
     {
-      path: 'journals',
-      name: 'WellnessJournals',
+      path: 'diary-dashboard',
+      name: 'WellnessDiaryDashboard',
+      component: '/wellness/diary-dashboard',
+      meta: {
+        title: 'menus.wellness.diaryDashboard',
+        icon: 'ri:pie-chart-2-line',
+        keepAlive: true
+      }
+    },
+    {
+      path: 'diaries',
+      name: 'WellnessDiaries',
       component: '/wellness/journals',
       meta: { title: 'menus.wellness.journals', icon: 'ri:book-open-line', keepAlive: true }
     },

@@ -7,59 +7,24 @@
       ></div
     >
     <StatCards :items="statCards" />
-    <ElCard class="wellness-card art-table-card" shadow="never">
-      <ArtTableHeader :loading="loading" @refresh="load">
-        <template #left
-          ><div class="wellness-search">
-            <ElInput
-              v-model="filters.keyword"
-              class="keyword"
-              clearable
-              :placeholder="t('wellness.common.userSearch')"
-              @keyup.enter="search"
-            />
-            <ElDatePicker
-              v-model="filters.dates"
-              class="date-range"
-              type="daterange"
-              value-format="YYYY-MM-DD"
-              :start-placeholder="t('wellness.common.startDate')"
-              :end-placeholder="t('wellness.common.endDate')"
-            />
-            <ElSelect
-              v-model="filters.context"
-              class="select-filter"
-              clearable
-              :placeholder="t('wellness.heartRate.context')"
-              ><ElOption
-                v-for="item in contexts"
-                :key="item"
-                :label="t(`wellness.context.${item}`)"
-                :value="item"
-            /></ElSelect>
-            <ElSelect
-              v-model="filters.dataQuality"
-              class="select-filter"
-              clearable
-              :placeholder="t('wellness.common.quality')"
-              ><ElOption
-                v-for="item in qualityOptions"
-                :key="item"
-                :label="t(`wellness.quality.${item}`)"
-                :value="item"
-            /></ElSelect>
-            <ElButton type="primary" @click="search">{{ t('table.searchBar.search') }}</ElButton
-            ><ElButton @click="reset">{{ t('table.searchBar.reset') }}</ElButton>
-          </div></template
-        >
-      </ArtTableHeader>
+
+    <ArtSearchBar
+      v-model="searchForm"
+      :items="searchItems"
+      :show-expand="false"
+      @search="handleSearch"
+      @reset="handleReset"
+    />
+
+    <ElCard class="wellness-card art-table-card table-card-with-search" shadow="never">
+      <ArtTableHeader :loading="loading" @refresh="refreshData" />
       <ArtTable
         :loading="loading"
-        :data="items"
+        :data="data"
         :pagination="pagination"
         row-key="id"
-        @pagination:size-change="changeSize"
-        @pagination:current-change="changePage"
+        @pagination:size-change="handleSizeChange"
+        @pagination:current-change="handleCurrentChange"
       >
         <ElTableColumn :label="t('wellness.common.user')" min-width="210"
           ><template #default="{ row }"
@@ -154,14 +119,15 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, reactive, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useTable } from '@/hooks/core/useTable'
   import {
     fetchHeartRateDetail,
     fetchHeartRateRecords,
     type HeartRateDetail,
-    type HeartRateItem,
-    type HeartRateStats
+    type HeartRateStats,
+    type WellnessListParams
   } from '@/api/wellness'
   import StatCards from '../components/StatCards.vue'
   import { formatDate, formatDateTime, qualityTagType } from '../shared'
@@ -170,18 +136,15 @@
   const { t, locale } = useI18n()
   const contexts = ['continuous', 'manual', 'workout', 'sleep'],
     qualityOptions = ['normal', 'partial', 'missing']
-  const loading = ref(false),
-    drawerVisible = ref(false)
-  const items = ref<HeartRateItem[]>([]),
-    detail = ref<HeartRateDetail>()
+  const drawerVisible = ref(false)
+  const detail = ref<HeartRateDetail>()
   const stats = ref<HeartRateStats>({
     recordCount: 0,
     userCount: 0,
     averageHeartRate: 0,
     averageRestingRate: 0
   })
-  const pagination = reactive({ current: 1, size: 20, total: 0 })
-  const filters = reactive<{
+  const searchForm = ref<{
     keyword: string
     dates: string[]
     context: string
@@ -199,49 +162,96 @@
       value: `${stats.value.averageRestingRate.toFixed(1)} bpm`
     }
   ])
-  const load = async () => {
-    loading.value = true
-    try {
-      const response = await fetchHeartRateRecords({
-        page: pagination.current,
-        pageSize: pagination.size,
-        keyword: filters.keyword || undefined,
-        startDate: filters.dates?.[0],
-        endDate: filters.dates?.[1],
-        context: filters.context || undefined,
-        dataQuality: filters.dataQuality || undefined
-      })
-      items.value = response.items
-      pagination.total = response.total
-      stats.value = response.stats
-    } finally {
-      loading.value = false
+  const searchItems = computed(() => [
+    {
+      label: t('wellness.common.user'),
+      key: 'keyword',
+      type: 'input',
+      props: { clearable: true, placeholder: t('wellness.common.userSearch') }
+    },
+    {
+      label: t('wellness.common.date'),
+      key: 'dates',
+      type: 'daterange',
+      props: {
+        type: 'daterange',
+        valueFormat: 'YYYY-MM-DD',
+        startPlaceholder: t('wellness.common.startDate'),
+        endPlaceholder: t('wellness.common.endDate')
+      }
+    },
+    {
+      label: t('wellness.heartRate.context'),
+      key: 'context',
+      type: 'select',
+      props: {
+        clearable: true,
+        placeholder: t('wellness.heartRate.context'),
+        options: contexts.map((item) => ({
+          label: t(`wellness.context.${item}`),
+          value: item
+        }))
+      }
+    },
+    {
+      label: t('wellness.common.quality'),
+      key: 'dataQuality',
+      type: 'select',
+      props: {
+        clearable: true,
+        placeholder: t('wellness.common.quality'),
+        options: qualityOptions.map((item) => ({
+          label: t(`wellness.quality.${item}`),
+          value: item
+        }))
+      }
     }
+  ])
+
+  const fetchTableData = async (params: WellnessListParams) => {
+    const response = await fetchHeartRateRecords(params)
+    stats.value = response.stats
+    return response
   }
-  const search = () => {
-    pagination.current = 1
-    load()
+
+  const {
+    data,
+    loading,
+    pagination,
+    getData,
+    replaceSearchParams,
+    resetSearchParams,
+    refreshData,
+    handleSizeChange,
+    handleCurrentChange
+  } = useTable({
+    core: {
+      apiFn: fetchTableData,
+      apiParams: { page: 1, pageSize: 20 },
+      paginationKey: { current: 'page', size: 'pageSize' }
+    }
+  })
+
+  const handleSearch = (params: Record<string, any>) => {
+    const { dates, ...filters } = params
+    replaceSearchParams({
+      ...filters,
+      startDate: dates?.[0],
+      endDate: dates?.[1]
+    })
+    getData()
   }
-  const reset = () => {
-    Object.assign(filters, { keyword: '', dates: [], context: '', dataQuality: '' })
-    search()
-  }
-  const changePage = (page: number) => {
-    pagination.current = page
-    load()
-  }
-  const changeSize = (size: number) => {
-    pagination.size = size
-    pagination.current = 1
-    load()
-  }
+  const handleReset = () => resetSearchParams()
   const openDetail = async (id: string) => {
     detail.value = await fetchHeartRateDetail(id)
     drawerVisible.value = true
   }
-  load()
 </script>
 
 <style scoped lang="scss">
   @use '../shared';
+
+  .table-card-with-search {
+    margin-top: 12px;
+  }
 </style>
