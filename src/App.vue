@@ -15,22 +15,22 @@
   import { useUserStore } from './store/modules/user'
   import zh from 'element-plus/es/locale/lang/zh-cn'
   import en from 'element-plus/es/locale/lang/en'
+  import pt from 'element-plus/es/locale/lang/pt-br'
   import { systemUpgrade } from './utils/sys'
   import { toggleTransition } from './utils/ui/animation'
   import { checkStorageCompatibility } from './utils/storage'
   import { initializeTheme } from './hooks/core/useTheme'
-  import { LanguageEnum } from './enums/appEnum'
 
   const userStore = useUserStore()
   const { language } = storeToRefs(userStore)
 
   const locales = {
     zh: zh,
-    en: en
+    en: en,
+    pt: pt
   }
 
   onBeforeMount(() => {
-    userStore.setLanguage(LanguageEnum.EN)
     toggleTransition(true)
     initializeTheme()
   })

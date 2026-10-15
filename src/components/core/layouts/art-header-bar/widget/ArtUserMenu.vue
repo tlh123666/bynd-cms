@@ -12,19 +12,12 @@
     popper-style="padding: 5px 16px;"
   >
     <template #reference>
-      <img
-        class="size-8.5 mr-5 c-p rounded-full max-sm:w-6.5 max-sm:h-6.5 max-sm:mr-[16px]"
-        src="@imgs/user/avatar.webp"
-        alt="avatar"
-      />
+      <span class="admin-avatar mr-5 max-sm:mr-[16px]">{{ initials }}</span>
     </template>
     <template #default>
       <div class="pt-3">
         <div class="flex-c pb-1 px-0">
-          <img
-            class="w-10 h-10 mr-3 ml-0 overflow-hidden rounded-full float-left"
-            src="@imgs/user/avatar.webp"
-          />
+          <span class="admin-avatar large mr-3">{{ initials }}</span>
           <div class="w-[calc(100%-60px)] h-full">
             <span class="block text-sm font-medium text-g-800 truncate">{{
               userInfo.userName
@@ -36,14 +29,6 @@
           <li class="btn-item" @click="goPage('/system/user-center')">
             <ArtSvgIcon icon="ri:user-3-line" />
             <span>{{ $t('topBar.user.userCenter') }}</span>
-          </li>
-          <li class="btn-item" @click="toDocs()">
-            <ArtSvgIcon icon="ri:book-2-line" />
-            <span>{{ $t('topBar.user.docs') }}</span>
-          </li>
-          <li class="btn-item" @click="toGithub()">
-            <ArtSvgIcon icon="ri:github-line" />
-            <span>{{ $t('topBar.user.github') }}</span>
           </li>
           <li class="btn-item" @click="lockScreen()">
             <ArtSvgIcon icon="ri:lock-line" />
@@ -64,7 +49,6 @@
   import { useRouter } from 'vue-router'
   import { ElMessageBox } from 'element-plus'
   import { useUserStore } from '@/store/modules/user'
-  import { WEB_LINKS } from '@/utils/constants'
   import { mittBus } from '@/utils/sys'
 
   defineOptions({ name: 'ArtUserMenu' })
@@ -75,6 +59,7 @@
 
   const { getUserInfo: userInfo } = storeToRefs(userStore)
   const userMenuPopover = ref()
+  const initials = computed(() => (userInfo.value.userName || 'BYND').slice(0, 2).toUpperCase())
 
   /**
    * 页面跳转
@@ -82,20 +67,6 @@
    */
   const goPage = (path: string): void => {
     router.push(path)
-  }
-
-  /**
-   * 打开文档页面
-   */
-  const toDocs = (): void => {
-    window.open(WEB_LINKS.DOCS)
-  }
-
-  /**
-   * 打开 GitHub 页面
-   */
-  const toGithub = (): void => {
-    window.open(WEB_LINKS.GITHUB)
   }
 
   /**
@@ -163,5 +134,25 @@
     transition-all
     duration-200
     hover:shadow-xl;
+  }
+
+  .admin-avatar {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--el-color-primary);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .admin-avatar.large {
+    width: 40px;
+    height: 40px;
   }
 </style>

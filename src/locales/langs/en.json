@@ -541,6 +541,237 @@
     },
     "messages": { "saved": "Saved", "deleted": "Deleted", "archived": "Archived" }
   },
+  "groupAdmin": {
+    "eyebrow": "BYND COMMUNITY",
+    "title": "Group Management",
+    "subtitle": "Review user-created groups, participation and community activity.",
+    "refresh": "Refresh",
+    "stats": {
+      "groups": "Groups",
+      "members": "Active Members",
+      "goals": "Group Goals",
+      "messages": "Chat Messages"
+    },
+    "filters": {
+      "keyword": "Search group name or numeric ID",
+      "visibility": "Visibility",
+      "status": "Status",
+      "search": "Search",
+      "reset": "Reset"
+    },
+    "visibility": {
+      "public": "Public",
+      "private": "Private",
+      "publicGroup": "Public group",
+      "privateGroup": "Private group"
+    },
+    "status": { "active": "Active", "archived": "Archived" },
+    "columns": {
+      "group": "Group",
+      "owner": "Owner",
+      "type": "Type",
+      "members": "Members",
+      "goals": "Goals",
+      "messages": "Messages",
+      "status": "Status",
+      "created": "Created",
+      "actions": "Actions"
+    },
+    "details": "Details",
+    "empty": "No groups found",
+    "detailTitle": "Group Details",
+    "groupId": "Group ID {id}",
+    "noDescription": "No group description",
+    "unknown": "Unknown",
+    "activeMembers": "Active members",
+    "totalGoals": "Total goals",
+    "validMessages": "Valid messages",
+    "loadFailed": "Failed to load group data"
+  },
+  "challengeAdmin": {
+    "eyebrow": "BYND COMMUNITY",
+    "title": "Challenge Management",
+    "subtitle": "Create and manage BYND challenges and their daily content.",
+    "create": "Create Challenge",
+    "edit": "Edit Challenge",
+    "stats": {
+      "all": "All Challenges",
+      "published": "Published",
+      "drafts": "Drafts",
+      "participants": "Participants"
+    },
+    "filters": {
+      "keyword": "Search title or slug",
+      "domain": "Domain",
+      "status": "Status",
+      "search": "Search",
+      "reset": "Reset"
+    },
+    "columns": {
+      "challenge": "Challenge",
+      "progress": "Content Progress",
+      "participants": "Participants",
+      "status": "Status",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Edit",
+      "dailyContent": "Daily Content",
+      "publish": "Publish",
+      "archive": "Archive",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "empty": "No challenges",
+    "daysUnit": "{count} days",
+    "status": { "draft": "Draft", "published": "Published", "archived": "Archived" },
+    "domains": {
+      "body": "Body",
+      "mind": "Mind",
+      "sleep_recovery": "Sleep & Recovery",
+      "nutrition_metabolism": "Nutrition & Metabolism",
+      "longevity": "Longevity",
+      "sustainable_performance": "Sustainable Performance",
+      "life_wellbeing": "Life & Wellbeing"
+    },
+    "form": {
+      "name": "Challenge Name",
+      "slug": "Slug",
+      "domain": "Domain",
+      "duration": "Duration (days)",
+      "sortOrder": "Sort Order",
+      "summary": "Summary",
+      "description": "Description",
+      "coverUrl": "Cover URL",
+      "availableFrom": "Available From",
+      "availableUntil": "Available Until"
+    },
+    "expert": {
+      "title": "Expert Collaboration",
+      "hint": "When enabled, name, title and credential are required.",
+      "name": "Name",
+      "role": "Title",
+      "credential": "Credential / Registration",
+      "avatarUrl": "Avatar URL"
+    },
+    "daily": {
+      "title": "Daily Content",
+      "configured": "Configured {configured} / {total} days",
+      "day": "Day {day}",
+      "titleField": "Title",
+      "content": "Content",
+      "action": "Daily Action",
+      "trackingMethod": "Tracking Method",
+      "manual": "Manual completion",
+      "workout": "Verified workout",
+      "workoutMetric": "Workout Metric",
+      "activityCode": "Activity Code",
+      "activityCodeHint": "Leave blank for all workouts",
+      "targetValue": "Target Value",
+      "saveDay": "Save Day {day}"
+    },
+    "metrics": {
+      "workout_count": "Workout count",
+      "active_minutes": "Active minutes",
+      "distance_km": "Distance (km)",
+      "calories": "Calories",
+      "steps": "Steps"
+    },
+    "validation": {
+      "challengeRequired": "Enter a name, slug and description.",
+      "expertRequired": "Complete the expert name, title and credential.",
+      "dayRequired": "Complete the title, content and action for this day.",
+      "workoutRequired": "Select a workout metric and enter a target greater than zero.",
+      "missingDays": "Complete daily content for day(s): {days}.",
+      "invalidWorkoutDay": "Complete the workout metric and target for day {day}."
+    },
+    "messages": {
+      "saved": "Challenge saved.",
+      "daySaved": "Day {day} saved.",
+      "published": "Challenge published.",
+      "archived": "Challenge archived."
+    },
+    "confirm": {
+      "publishTitle": "Publish Challenge",
+      "publishText": "Publishing makes this challenge available to users. Continue?",
+      "archiveTitle": "Archive Challenge",
+      "archiveText": "Archiving removes the challenge from the user catalog but preserves participation history."
+    }
+  },
+  "dashboardAdmin": {
+    "title": "Operations Overview",
+    "subtitle": "Live totals from BYND users and community activity.",
+    "refresh": "Refresh",
+    "cards": {
+      "users": "Registered Users",
+      "groups": "Community Groups",
+      "challenges": "Challenges",
+      "participants": "Challenge Enrolments"
+    },
+    "recentUsers": "Recently Registered Users",
+    "recentUsersHint": "The five latest registrations from the user database.",
+    "manageUsers": "Manage users"
+  },
+  "userAdmin": {
+    "title": "User Management",
+    "subtitle": "Manage registered users, profile details, account status and the latest body measurements.",
+    "create": "Add User",
+    "createTitle": "Register User",
+    "editTitle": "Edit User Profile",
+    "edit": "Edit",
+    "deactivate": "Deactivate",
+    "deactivateTitle": "Deactivate User",
+    "save": "Save Changes",
+    "search": "Search",
+    "reset": "Reset",
+    "refresh": "Refresh",
+    "searchPlaceholder": "Search by name, email, phone or username",
+    "timezonePlaceholder": "For example, Europe/Lisbon",
+    "total": "{count} registered users",
+    "empty": "No users match the current filters.",
+    "confirmDeactivate": "Deactivate {name}? The account will no longer be able to sign in, but its historical data will be retained.",
+    "columns": { "user": "User", "measurements": "Height / Weight", "actions": "Actions" },
+    "fields": {
+      "email": "Registration Email",
+      "fullName": "Full Name",
+      "username": "Username",
+      "phone": "Phone Number",
+      "birthDate": "Date of Birth",
+      "biologicalSex": "Biological Sex",
+      "genderIdentity": "Gender Identity",
+      "locale": "Preferred Language",
+      "timezone": "Time Zone",
+      "status": "Account Status",
+      "heightCm": "Height (cm)",
+      "weightKg": "Weight (kg)",
+      "avatarUrl": "Avatar URL",
+      "lastLoginAt": "Last Login",
+      "createdAt": "Registered At"
+    },
+    "status": {
+      "0": "Pending",
+      "1": "Active",
+      "2": "Suspended",
+      "3": "Banned",
+      "4": "Deactivated"
+    },
+    "sex": {
+      "female": "Female",
+      "male": "Male",
+      "intersex": "Intersex",
+      "unknown": "Unknown",
+      "prefer_not_to_say": "Prefer not to say"
+    },
+    "validation": {
+      "emailRequired": "Registration email is required",
+      "emailInvalid": "Enter a valid email address",
+      "fullNameRequired": "Full name is required",
+      "localeRequired": "Preferred language is required",
+      "timezoneRequired": "Time zone is required"
+    },
+    "messages": { "saved": "User information saved.", "deactivated": "User account deactivated." }
+  },
   "table": {
     "form": {
       "reset": "Reset",
