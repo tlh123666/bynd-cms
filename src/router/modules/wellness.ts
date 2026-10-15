@@ -11,6 +11,12 @@ export const wellnessRoutes: AppRouteRecord = {
   },
   children: [
     {
+      path: 'devices',
+      name: 'DeviceManagement',
+      component: '/wellness/devices',
+      meta: { title: 'menus.wellness.devices', icon: 'ri:watch-line', keepAlive: true }
+    },
+    {
       path: 'sleep',
       name: 'WellnessSleep',
       component: '/wellness/sleep',
