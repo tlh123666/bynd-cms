@@ -230,6 +230,11 @@
       "groups": "Groups",
       "challenges": "Challenges"
     },
+    "content": {
+      "title": "Content Management",
+      "reading": "Reading Management",
+      "guidance": "Guidance Management"
+    },
     "wellness": {
       "title": "Health Data",
       "devices": "Device Management",
@@ -510,6 +515,8 @@
       "epubFile": "EPUB file",
       "uploadCover": "Upload cover",
       "uploadEpub": "Upload EPUB",
+      "bookUploadHint": "Select E-book to upload a book file.",
+      "epubUploadHint": "Upload the corresponding EPUB for each enabled language, up to 80 MB per file.",
       "file": "File",
       "assetType": "Asset type",
       "types": { "article": "Article", "epub": "E-book" },

@@ -11,6 +11,7 @@
     <StatCards :items="statCards" />
 
     <ArtSearchBar
+      v-show="showSearchBar"
       v-model="searchForm"
       :items="searchItems"
       :show-expand="false"
@@ -19,7 +20,11 @@
     />
 
     <ElCard class="wellness-card art-table-card table-card-with-search" shadow="never">
-      <ArtTableHeader :loading="loading" @refresh="refreshData" />
+      <ArtTableHeader
+        v-model:show-search-bar="showSearchBar"
+        :loading="loading"
+        @refresh="refreshData"
+      />
 
       <ArtTable
         :loading="loading"
@@ -146,6 +151,7 @@
   defineOptions({ name: 'WellnessSleep' })
   const { t, locale } = useI18n()
   const qualityOptions = ['normal', 'partial', 'missing']
+  const showSearchBar = ref(true)
   const drawerVisible = ref(false)
   const detail = ref<SleepDetail>()
   const stats = ref<SleepStats>({

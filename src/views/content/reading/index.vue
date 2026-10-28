@@ -209,10 +209,13 @@
           ><ElFormItem label="Slug"
             ><ElInput v-model="publicationForm.slug" placeholder="sleep-better" /></ElFormItem
           ><ElFormItem :label="t('content.reading.type')"
-            ><ElSelect v-model="publicationForm.contentType"
-              ><ElOption :label="t('content.reading.types.article')" value="article" /><ElOption
-                :label="t('content.reading.types.epub')"
-                value="epub" /></ElSelect></ElFormItem
+            ><div class="field-stack"
+              ><ElSelect v-model="publicationForm.contentType"
+                ><ElOption :label="t('content.reading.types.article')" value="article" /><ElOption
+                  :label="t('content.reading.types.epub')"
+                  value="epub" /></ElSelect
+              ><small>{{ t('content.reading.bookUploadHint') }}</small></div
+            ></ElFormItem
           ><ElFormItem :label="t('content.reading.category')"
             ><ElSelect v-model="publicationForm.categoryId"
               ><ElOption
@@ -271,6 +274,20 @@
               :label="`${t('content.common.defaultLanguage')}: ${item.label}`"
               :value="item.value" /></ElSelect
         ></div>
+        <section v-if="publicationForm.contentType === 'epub'" class="epub-upload-panel">
+          <div class="epub-upload-heading">
+            <strong>{{ t('content.reading.epubFile') }}</strong>
+            <span>{{ t('content.reading.epubUploadHint') }}</span>
+          </div>
+          <div v-for="item in activeLocales" :key="item" class="epub-upload-row">
+            <span>{{ localeLabel(item) }}</span>
+            <ReadingAssetUpload
+              v-model="selectedEpub[item]"
+              kind="epub"
+              :label="t('content.reading.uploadEpub')"
+            />
+          </div>
+        </section>
         <ElTabs v-model="editingLocale" type="border-card"
           ><ElTabPane
             v-for="locale in activeLocales"
@@ -290,14 +307,9 @@
               ><ElFormItem class="wide" :label="t('content.reading.keywords')"
                 ><ElInput v-model="publicationTranslations[locale].searchKeywords" /></ElFormItem
               ><ElFormItem
-                v-if="publicationForm.contentType === 'epub'"
+                v-if="publicationForm.contentType === 'article'"
                 class="wide"
-                :label="t('content.reading.epubFile')"
-                ><ReadingAssetUpload
-                  v-model="selectedEpub[locale]"
-                  kind="epub"
-                  :label="t('content.reading.uploadEpub')" /></ElFormItem
-              ><ElFormItem v-else class="wide" :label="t('content.reading.body')"
+                :label="t('content.reading.body')"
                 ><ArtWangEditor
                   v-model="publicationTranslations[locale].body"
                   height="320px"
@@ -380,7 +392,7 @@
 
   defineOptions({ name: 'ReadingManagement' })
   const { t, locale } = useI18n()
-  const locales: ContentLocale[] = ['zh', 'en', 'pt']
+  const locales: ContentLocale[] = ['en', 'pt', 'zh']
   const statuses = ['draft', 'published', 'archived']
   const localeOptions = computed(() =>
     locales.map((value) => ({ value, label: t(`content.languages.${value}`) }))
@@ -400,9 +412,9 @@
     categoryVisible = ref(false),
     editingPublicationId = ref(''),
     editingCategoryId = ref(''),
-    editingLocale = ref<ContentLocale>('zh'),
-    categoryLocale = ref<ContentLocale>('zh'),
-    activeLocales = ref<ContentLocale[]>(['zh']),
+    editingLocale = ref<ContentLocale>('en'),
+    categoryLocale = ref<ContentLocale>('en'),
+    activeLocales = ref<ContentLocale[]>(['en', 'pt']),
     selectedCover = ref<ReadingAsset>(),
     existingCoverAssetId = ref<string>(),
     selectedEpub = reactive<Partial<Record<ContentLocale, ReadingAsset>>>({})
@@ -440,7 +452,7 @@
     slug: '',
     contentType: 'article',
     categoryId: '',
-    defaultLocale: 'zh',
+    defaultLocale: 'en',
     author: 'BYND Editorial',
     publisher: '',
     isbn13: '',
@@ -470,13 +482,13 @@
     isEnabled: true
   })
   const translation = (items: ReadingTranslation[], preferred: string) =>
-    items.find((x) => x.locale === preferred) || items.find((x) => x.locale === 'zh') || items[0]
+    items.find((x) => x.locale === preferred) || items.find((x) => x.locale === 'en') || items[0]
   const categoryName = (id: string) => {
     const item = categories.value.find((x) => x.id === id)
     if (!item) return '—'
     return (
       item.translations.find((x) => x.locale === locale.value)?.name ||
-      item.translations.find((x) => x.locale === 'zh')?.name ||
+      item.translations.find((x) => x.locale === 'en')?.name ||
       item.slug
     )
   }
@@ -549,7 +561,7 @@
   const openPublication = async (row?: ReadingPublication) => {
     Object.assign(publicationForm, blankPublication())
     resetTranslations()
-    activeLocales.value = ['zh']
+    activeLocales.value = ['en', 'pt']
     selectedCover.value = undefined
     existingCoverAssetId.value = undefined
     locales.forEach((x) => delete selectedEpub[x])
@@ -580,7 +592,7 @@
           selectedEpub[x.locale] = assets.value.find((a) => a.id === x.contentAssetId)
       })
     }
-    editingLocale.value = activeLocales.value[0] || 'zh'
+    editingLocale.value = activeLocales.value[0] || 'en'
     publicationVisible.value = true
   }
   const ensureDefaultLocale = (value: ContentLocale) => {
@@ -651,7 +663,7 @@
         row?.translations.find((v) => v.locale === x) || emptyCategoryTranslation(x)
       )
     )
-    categoryLocale.value = 'zh'
+    categoryLocale.value = 'en'
     categoryVisible.value = true
   }
   const saveCategory = async () => {
@@ -784,6 +796,35 @@
   }
   .locale-options > .el-select {
     width: 220px;
+  }
+  .field-stack {
+    width: 100%;
+  }
+  .field-stack small,
+  .epub-upload-heading span {
+    display: block;
+    margin-top: 6px;
+    color: var(--el-text-color-secondary);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .epub-upload-panel {
+    padding: 16px;
+    margin: 12px 0 16px;
+    border: 1px solid var(--el-border-color-light);
+    border-radius: 8px;
+    background: var(--el-fill-color-lighter);
+  }
+  .epub-upload-heading {
+    margin-bottom: 12px;
+  }
+  .epub-upload-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid var(--el-border-color-lighter);
   }
   :deep(.el-select) {
     width: 100%;

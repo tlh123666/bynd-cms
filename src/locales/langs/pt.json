@@ -183,6 +183,11 @@
     "outside": { "title": "Externo" },
     "dashboard": { "title": "Painel", "console": "Visão geral" },
     "community": { "title": "Comunidade", "groups": "Grupos", "challenges": "Desafios" },
+    "content": {
+      "title": "Gestão de conteúdo",
+      "reading": "Gestão de leitura",
+      "guidance": "Gestão de orientação"
+    },
     "wellness": {
       "title": "Dados de saúde",
       "sleep": "Gestão do sono",
@@ -326,6 +331,8 @@
       "epubFile": "Arquivo EPUB",
       "uploadCover": "Enviar capa",
       "uploadEpub": "Enviar EPUB",
+      "bookUploadHint": "Selecione E-book para enviar um arquivo de livro.",
+      "epubUploadHint": "Envie o EPUB correspondente para cada idioma ativado, com até 80 MB por arquivo.",
       "file": "Arquivo",
       "assetType": "Tipo de arquivo",
       "types": { "article": "Artigo", "epub": "E-book" },

@@ -11,6 +11,7 @@
     <StatCards :items="statCards" />
 
     <ArtSearchBar
+      v-show="showSearchBar"
       v-model="searchForm"
       :items="searchItems"
       :show-expand="false"
@@ -19,7 +20,11 @@
     />
 
     <ElCard class="wellness-card art-table-card table-card-with-search" shadow="never">
-      <ArtTableHeader :loading="loading" @refresh="refreshData" />
+      <ArtTableHeader
+        v-model:show-search-bar="showSearchBar"
+        :loading="loading"
+        @refresh="refreshData"
+      />
 
       <ArtTable
         :loading="loading"
@@ -181,6 +186,7 @@
     'custom'
   ]
 
+  const showSearchBar = ref(true)
   const detailLoading = ref(false)
   const drawerVisible = ref(false)
   const detail = ref<DiaryDetail>()
