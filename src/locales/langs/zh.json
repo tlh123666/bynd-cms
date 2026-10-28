@@ -230,6 +230,11 @@
       "groups": "小组监管",
       "challenges": "挑战管理"
     },
+    "content": {
+      "title": "内容管理",
+      "reading": "阅读管理",
+      "guidance": "引导管理"
+    },
     "wellness": {
       "title": "健康数据",
       "devices": "设备管理",
@@ -510,6 +515,8 @@
       "epubFile": "EPUB 文件",
       "uploadCover": "上传封面",
       "uploadEpub": "上传 EPUB",
+      "bookUploadHint": "如需上传书籍文件，请将类型切换为“电子书”。",
+      "epubUploadHint": "请为每种启用语言上传对应的 EPUB 文件，单个文件最大 80 MB。",
       "file": "文件",
       "assetType": "资源类型",
       "types": { "article": "文章", "epub": "电子书" },
