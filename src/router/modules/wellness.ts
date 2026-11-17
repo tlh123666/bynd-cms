@@ -39,6 +39,12 @@ export const wellnessRoutes: AppRouteRecord = {
       meta: { title: 'menus.wellness.journals', icon: 'ri:book-open-line', keepAlive: true }
     },
     {
+      path: 'vitality',
+      name: 'WellnessVitality',
+      component: '/wellness/vitality',
+      meta: { title: 'menus.wellness.vitality', icon: 'ri:battery-charge-line', keepAlive: true }
+    },
+    {
       path: 'heart-rate',
       name: 'WellnessHeartRate',
       component: '/wellness/heart-rate',

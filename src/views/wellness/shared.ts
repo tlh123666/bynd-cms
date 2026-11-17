@@ -12,16 +12,31 @@ export const pageAdapter = <T>(response: {
   size: response.pageSize
 })
 
-export const formatDate = (value: string, locale: Composer['locale']['value']) =>
-  new Intl.DateTimeFormat(locale === 'zh' ? 'zh-CN' : 'en-US', { dateStyle: 'medium' }).format(
-    new Date(value)
-  )
-
-export const formatDateTime = (value: string, locale: Composer['locale']['value']) =>
-  new Intl.DateTimeFormat(locale === 'zh' ? 'zh-CN' : 'en-US', {
+const dateLocale = (locale: string) =>
+  locale.startsWith('zh') ? 'zh-CN' : locale.startsWith('pt') ? 'pt-BR' : 'en-US'
+export const formatDate = (value: string, locale: Composer['locale']['value']) => {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(value || '')
+  if (!match) return '—'
+  const date = new Date(`${match[1]}-${match[2]}-${match[3]}T12:00:00Z`)
+  if (!Number.isFinite(date.getTime())) return '—'
+  return new Intl.DateTimeFormat(dateLocale(locale), {
     dateStyle: 'medium',
-    timeStyle: 'short'
-  }).format(new Date(value))
+    timeZone: 'UTC'
+  }).format(date)
+}
+export const formatDateTime = (
+  value: string,
+  locale: Composer['locale']['value'],
+  timeZone?: string
+) => {
+  const date = new Date(value)
+  if (!Number.isFinite(date.getTime())) return '—'
+  return new Intl.DateTimeFormat(dateLocale(locale), {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone
+  }).format(date)
+}
 
 export const formatDuration = (minutes: number, t: Composer['t']) => {
   const hours = Math.floor(minutes / 60)
