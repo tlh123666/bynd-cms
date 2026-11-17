@@ -2,7 +2,7 @@
   <div class="wellness-page art-full-height">
     <div class="wellness-heading">
       <div>
-        <p class="eyebrow">BODY DIARIES</p>
+        <p class="eyebrow">{{ t('wellness.diaries.title') }}</p>
         <h1>{{ t('wellness.diaries.title') }}</h1>
         <p>{{ t('wellness.diaries.subtitle') }}</p>
       </div>
@@ -81,70 +81,119 @@
       </ArtTable>
     </ElCard>
 
-    <ElDrawer v-model="drawerVisible" :title="t('wellness.diaries.detailTitle')" size="680px">
-      <div v-loading="detailLoading">
-        <template v-if="detail">
-          <ElDescriptions :column="2" border>
-            <ElDescriptionsItem :label="t('wellness.common.user')">
-              {{ detail.user.name }}
-            </ElDescriptionsItem>
-            <ElDescriptionsItem :label="t('wellness.common.date')">
-              {{ formatDate(detail.statDate, locale) }}
-            </ElDescriptionsItem>
-            <ElDescriptionsItem :label="t('wellness.diaries.storyStatus')">
-              <ElTag :type="statusType(detail.storyStatus)">
-                {{ statusLabel(detail.storyStatus) }}
-              </ElTag>
-            </ElDescriptionsItem>
-            <ElDescriptionsItem :label="t('wellness.diaries.model')">
-              {{ detail.storyModel || '—' }}
-            </ElDescriptionsItem>
-            <ElDescriptionsItem :label="t('wellness.common.timezone')">
-              {{ detail.timezone }}
-            </ElDescriptionsItem>
-            <ElDescriptionsItem :label="t('wellness.diaries.generatedAt')">
-              {{ detail.storyGeneratedAt ? formatDateTime(detail.storyGeneratedAt, locale) : '—' }}
-            </ElDescriptionsItem>
-          </ElDescriptions>
+    <WellnessDetailDrawer
+      v-model="drawerVisible"
+      :title="t('wellness.diaries.detailTitle')"
+      :loading="detailLoading"
+      :error="detailError"
+      @retry="retryDetail"
+    >
+      <template v-if="detail">
+        <ElDescriptions :column="2" border>
+          <ElDescriptionsItem :label="t('wellness.common.user')">
+            {{ detail.user.name }}
+          </ElDescriptionsItem>
+          <ElDescriptionsItem :label="t('wellness.common.date')">
+            {{ formatDate(detail.statDate, locale) }}
+          </ElDescriptionsItem>
+          <ElDescriptionsItem :label="t('wellness.diaries.storyStatus')">
+            <ElTag :type="statusType(detail.storyStatus)">
+              {{ statusLabel(detail.storyStatus) }}
+            </ElTag>
+          </ElDescriptionsItem>
+          <ElDescriptionsItem :label="t('wellness.diaries.model')">
+            {{ detail.storyModel || '—' }}
+          </ElDescriptionsItem>
+          <ElDescriptionsItem :label="t('wellness.common.timezone')">
+            {{ detail.timezone }}
+          </ElDescriptionsItem>
+          <ElDescriptionsItem :label="t('wellness.diaries.generatedAt')">
+            {{ detail.storyGeneratedAt ? formatDateTime(detail.storyGeneratedAt, locale) : '—' }}
+          </ElDescriptionsItem>
+        </ElDescriptions>
+        <WellnessDetails
+          :value="{ revision: detail.revision, note: detail.note }"
+          :title="t('wellness.experience.workspace')"
+        />
+        <section class="detail-section">
+          <h3>{{ t('wellness.experience.trackers') }}</h3>
+          <p>{{ t('wellness.experience.trackerNotice') }}</p>
+          <ElTable :data="detail.trackers" row-key="trackerKey" size="small" max-height="300">
+            <ElTableColumn
+              prop="trackerKey"
+              :label="t('wellness.experience.fields.trackerKey')"
+              min-width="150"
+            />
+            <ElTableColumn
+              prop="customLabel"
+              :label="t('wellness.experience.fields.customLabel')"
+              min-width="140"
+            />
+            <ElTableColumn :label="t('wellness.experience.fields.enabled')" width="90"
+              ><template #default="{ row }">{{
+                t(`wellness.experience.${row.enabled ? 'yes' : 'no'}`)
+              }}</template></ElTableColumn
+            >
+            <ElTableColumn :label="t('wellness.experience.fields.favorite')" width="90"
+              ><template #default="{ row }">{{
+                t(`wellness.experience.${row.favorite ? 'yes' : 'no'}`)
+              }}</template></ElTableColumn
+            >
+            <ElTableColumn
+              prop="displayOrder"
+              :label="t('wellness.experience.fields.displayOrder')"
+              width="90"
+            />
+          </ElTable>
+        </section>
 
-          <section class="detail-section">
-            <h3>{{ detail.title || t('wellness.diaries.untitled') }}</h3>
-            <div class="journal-content">{{
-              detail.storyBody || t('wellness.diaries.noStory')
-            }}</div>
-          </section>
+        <section class="detail-section">
+          <h3>{{ detail.title || t('wellness.diaries.untitled') }}</h3>
+          <div class="journal-content">{{ detail.storyBody || t('wellness.diaries.noStory') }}</div>
+        </section>
 
-          <section class="detail-section">
-            <h3>{{ t('wellness.diaries.savedContext') }}</h3>
-            <div v-if="detail.contextItems.length" class="context-list">
-              <div v-for="item in detail.contextItems" :key="item.id" class="context-item">
-                <ElTag effect="plain">{{ contextLabel(item.kind) }}</ElTag>
-                <strong>{{ item.label }}</strong>
-                <span v-if="item.note">{{ item.note }}</span>
-              </div>
+        <section class="detail-section">
+          <h3>{{ t('wellness.diaries.savedContext') }}</h3>
+          <div v-if="detail.contextItems.length" class="context-list">
+            <div v-for="item in detail.contextItems" :key="item.id" class="context-item">
+              <ElTag effect="plain">{{ contextLabel(item.kind) }}</ElTag>
+              <strong>{{ item.label }}</strong>
+              <span v-if="item.note">{{ item.note }}</span>
             </div>
-            <ElEmpty v-else :description="t('wellness.diaries.noContext')" :image-size="72" />
-          </section>
+          </div>
+          <ElEmpty v-else :description="t('wellness.diaries.noContext')" :image-size="72" />
+        </section>
 
-          <section class="detail-section">
-            <h3>{{ t('wellness.diaries.events') }}</h3>
-            <ElTable v-if="detail.events.length" :data="detail.events" size="small">
-              <ElTableColumn :label="t('wellness.diaries.occurredAt')" width="170">
-                <template #default="{ row }">{{ formatDateTime(row.occurredAt, locale) }}</template>
-              </ElTableColumn>
-              <ElTableColumn :label="t('wellness.diaries.contextKind')" width="120">
-                <template #default="{ row }">{{ contextLabel(row.category) }}</template>
-              </ElTableColumn>
-              <ElTableColumn prop="label" :label="t('wellness.diaries.content')" min-width="170" />
-              <ElTableColumn :label="t('wellness.diaries.inputMethod')" width="100">
-                <template #default="{ row }">{{ inputLabel(row.inputMethod) }}</template>
-              </ElTableColumn>
-            </ElTable>
-            <ElEmpty v-else :description="t('wellness.diaries.noEvents')" :image-size="72" />
-          </section>
-        </template>
-      </div>
-    </ElDrawer>
+        <section class="detail-section">
+          <h3>{{ t('wellness.diaries.events') }}</h3>
+          <ElTable v-if="detail.events.length" :data="detail.events" size="small" row-key="id">
+            <ElTableColumn type="expand"
+              ><template #default="{ row }"
+                ><WellnessDetails
+                  :value="{
+                    note: row.note,
+                    intensity: row.intensity,
+                    numericValue: row.numericValue,
+                    unit: row.unit,
+                    aiConfidence: row.aiConfidence,
+                    ...row.details
+                  }" /></template
+            ></ElTableColumn>
+            <ElTableColumn :label="t('wellness.diaries.occurredAt')" width="170">
+              <template #default="{ row }">{{ formatDateTime(row.occurredAt, locale) }}</template>
+            </ElTableColumn>
+            <ElTableColumn :label="t('wellness.diaries.contextKind')" width="120">
+              <template #default="{ row }">{{ contextLabel(row.category) }}</template>
+            </ElTableColumn>
+            <ElTableColumn prop="label" :label="t('wellness.diaries.content')" min-width="170" />
+            <ElTableColumn :label="t('wellness.diaries.inputMethod')" width="100">
+              <template #default="{ row }">{{ inputLabel(row.inputMethod) }}</template>
+            </ElTableColumn>
+          </ElTable>
+          <ElEmpty v-else :description="t('wellness.diaries.noEvents')" :image-size="72" />
+        </section>
+      </template>
+    </WellnessDetailDrawer>
   </div>
 </template>
 
@@ -155,11 +204,13 @@
   import {
     fetchDiaryDetail,
     fetchDiaryRecords,
-    type DiaryDetail,
     type DiaryStats,
     type WellnessListParams
   } from '@/api/wellness'
   import StatCards from '../components/StatCards.vue'
+  import WellnessDetails from '../components/WellnessDetails.vue'
+  import WellnessDetailDrawer from '../components/WellnessDetailDrawer.vue'
+  import { useWellnessDetail } from '../useWellnessDetail'
   import { formatDate, formatDateTime } from '../shared'
 
   defineOptions({ name: 'WellnessDiaries' })
@@ -187,9 +238,8 @@
   ]
 
   const showSearchBar = ref(true)
-  const detailLoading = ref(false)
-  const drawerVisible = ref(false)
-  const detail = ref<DiaryDetail>()
+  const { drawerVisible, detailLoading, detailError, detail, openDetail, retryDetail } =
+    useWellnessDetail(fetchDiaryDetail)
   const stats = ref<DiaryStats>({
     recordCount: 0,
     userCount: 0,
@@ -302,16 +352,6 @@
     getData()
   }
   const handleReset = () => resetSearchParams()
-  const openDetail = async (id: string) => {
-    drawerVisible.value = true
-    detailLoading.value = true
-    detail.value = undefined
-    try {
-      detail.value = await fetchDiaryDetail(id)
-    } finally {
-      detailLoading.value = false
-    }
-  }
 </script>
 
 <style scoped lang="scss">

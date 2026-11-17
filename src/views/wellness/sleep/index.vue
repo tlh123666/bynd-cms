@@ -2,7 +2,7 @@
   <div class="wellness-page art-full-height">
     <div class="wellness-heading">
       <div>
-        <p class="eyebrow">SLEEP</p>
+        <p class="eyebrow">{{ t('wellness.sleep.title') }}</p>
         <h1>{{ t('wellness.sleep.title') }}</h1>
         <p>{{ t('wellness.sleep.subtitle') }}</p>
       </div>
@@ -86,7 +86,13 @@
       </ArtTable>
     </ElCard>
 
-    <ElDrawer v-model="drawerVisible" :title="t('wellness.sleep.detailTitle')" size="620px">
+    <WellnessDetailDrawer
+      v-model="drawerVisible"
+      :title="t('wellness.sleep.detailTitle')"
+      :loading="detailLoading"
+      :error="detailError"
+      @retry="retryDetail"
+    >
       <template v-if="detail">
         <ElDescriptions :column="2" border>
           <ElDescriptionsItem :label="t('wellness.common.user')">{{
@@ -108,6 +114,10 @@
             detail.summary.avgSpo2Percent == null ? '—' : `${detail.summary.avgSpo2Percent}%`
           }}</ElDescriptionsItem>
         </ElDescriptions>
+        <WellnessDetails
+          :value="detail.preferences"
+          :title="t('wellness.experience.sleepPreferences')"
+        />
         <div class="detail-section"
           ><h3>{{ t('wellness.sleep.sessions') }}</h3>
           <ElTable :data="detail.sessions" size="small">
@@ -130,7 +140,7 @@
           </ElTable>
         </div>
       </template>
-    </ElDrawer>
+    </WellnessDetailDrawer>
   </div>
 </template>
 
@@ -141,24 +151,26 @@
   import {
     fetchSleepDetail,
     fetchSleepRecords,
-    type SleepDetail,
     type SleepStats,
     type WellnessListParams
   } from '@/api/wellness'
   import StatCards from '../components/StatCards.vue'
+  import WellnessDetails from '../components/WellnessDetails.vue'
+  import WellnessDetailDrawer from '../components/WellnessDetailDrawer.vue'
+  import { useWellnessDetail } from '../useWellnessDetail'
   import { formatDate, formatDateTime, formatDuration, qualityTagType } from '../shared'
 
   defineOptions({ name: 'WellnessSleep' })
   const { t, locale } = useI18n()
   const qualityOptions = ['normal', 'partial', 'missing']
   const showSearchBar = ref(true)
-  const drawerVisible = ref(false)
-  const detail = ref<SleepDetail>()
+  const { drawerVisible, detailLoading, detailError, detail, openDetail, retryDetail } =
+    useWellnessDetail(fetchSleepDetail)
   const stats = ref<SleepStats>({
     recordCount: 0,
     userCount: 0,
-    averageSleepHours: 0,
-    averageScore: 0
+    averageSleepHours: null,
+    averageScore: null
   })
   const searchForm = ref<{
     keyword: string
@@ -216,9 +228,12 @@
     { label: t('wellness.common.users'), value: stats.value.userCount },
     {
       label: t('wellness.sleep.averageDuration'),
-      value: `${stats.value.averageSleepHours.toFixed(1)} h`
+      value:
+        stats.value.averageSleepHours == null
+          ? '—'
+          : `${stats.value.averageSleepHours.toFixed(1)} h`
     },
-    { label: t('wellness.sleep.averageScore'), value: stats.value.averageScore.toFixed(1) }
+    { label: t('wellness.sleep.averageScore'), value: stats.value.averageScore?.toFixed(1) ?? '—' }
   ])
   const fetchTableData = async (params: WellnessListParams) => {
     const response = await fetchSleepRecords(params)
@@ -254,10 +269,6 @@
     getData()
   }
   const handleReset = () => resetSearchParams()
-  const openDetail = async (id: string) => {
-    detail.value = await fetchSleepDetail(id)
-    drawerVisible.value = true
-  }
   const scoreType = (score?: number) =>
     score == null ? 'info' : score >= 80 ? 'success' : score >= 60 ? 'warning' : 'danger'
 </script>

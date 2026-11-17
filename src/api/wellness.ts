@@ -7,6 +7,11 @@ export interface ManagedUser {
 }
 
 export interface WellnessListParams {
+  waveformKind?: string
+  measurementContext?: string
+  kind?: string
+  considerTraining?: boolean
+  algorithmVersion?: number
   page?: number
   pageSize?: number
   keyword?: string
@@ -54,8 +59,8 @@ export interface SleepItem {
 export interface SleepStats {
   recordCount: number
   userCount: number
-  averageSleepHours: number
-  averageScore: number
+  averageSleepHours: number | null
+  averageScore: number | null
 }
 
 export interface SleepSession {
@@ -72,6 +77,7 @@ export interface SleepSession {
 }
 
 export interface SleepDetail {
+  preferences: SleepPreferences | null
   summary: SleepItem
   sessions: SleepSession[]
 }
@@ -134,6 +140,7 @@ export interface DiaryContextItem {
 }
 
 export interface DiaryEvent {
+  details: Record<string, string | number | boolean>
   id: string
   occurredAt: string
   category: string
@@ -148,6 +155,9 @@ export interface DiaryEvent {
 }
 
 export interface DiaryDetail extends DiaryItem {
+  note: string
+  revision: string
+  trackers: DiaryTracker[]
   storyBody: string
   contextItems: DiaryContextItem[]
   events: DiaryEvent[]
@@ -198,8 +208,8 @@ export interface HeartRateItem {
 export interface HeartRateStats {
   recordCount: number
   userCount: number
-  averageHeartRate: number
-  averageRestingRate: number
+  averageHeartRate: number | null
+  averageRestingRate: number | null
 }
 
 export interface HeartRateSample {
@@ -212,6 +222,10 @@ export interface HeartRateSample {
 }
 
 export interface HeartRateDetail {
+  settings: HeartSettings | null
+  measurements: HeartMeasurement[]
+  measurementTotal: number
+  sampleTotal: number
   summary: HeartRateItem
   samples: HeartRateSample[]
 }
@@ -242,3 +256,93 @@ export const fetchHeartRateRecords = (params: WellnessListParams) =>
 
 export const fetchHeartRateDetail = (id: string) =>
   request.get<HeartRateDetail>({ url: `/api/wellness/heart-rate/${id}` })
+
+export interface SleepPreferences {
+  targetSleepMinutes: number
+  targetBedtimeMinute: number
+  targetWakeMinute: number
+  windDownMinutes: number
+  showStages: boolean
+  showBiologicalClock: boolean
+  showRespiration: boolean
+  timezone: string
+}
+export interface HeartSettings {
+  zoneModel: string
+  maxHeartRate: number | null
+  restingHeartRate: number | null
+  showEstimatedPressure: boolean
+  notifyHighResting: boolean
+  notifyIrregularRhythm: boolean
+  algorithmVersion: number
+}
+export interface HeartMeasurement {
+  id: string
+  measuredAt: string
+  waveformKind: string
+  measurementContext: string
+  symptoms: string[]
+  durationMillis: number
+  sampleCount: number
+  heartRate: number | null
+  hrvMs: number | null
+  source: string
+  deviceSerial: string
+}
+export interface DiaryTracker {
+  trackerKey: string
+  enabled: boolean
+  favorite: boolean
+  displayOrder: number
+  customLabel: string | null
+}
+export interface VitalityItem {
+  user: ManagedUser
+  kind: 'recovery' | 'energy'
+  observedAt: string
+  considerTraining: boolean
+  algorithmVersion: number
+  score: number
+}
+export interface VitalityStats {
+  recordCount: number
+  userCount: number
+  averageRecovery: number | null
+  averageEnergy: number | null
+}
+export interface VitalityPreferences {
+  considerTraining: boolean
+  showFactors: boolean
+  showForecast: boolean
+  energyShowForecast: boolean
+  showWindows: boolean
+  lowRecoveryNotice: boolean
+  morningNotice: boolean
+  movementNotice: boolean
+  goalNotice: boolean
+  stepGoal: number
+  activeMinutesGoal: number
+}
+export interface VitalityDetail {
+  user: ManagedUser
+  preferences: VitalityPreferences | null
+}
+export const fetchVitalityRecords = (params: WellnessListParams) =>
+  request.get<PageData<VitalityItem, VitalityStats>>({ url: '/api/wellness/vitality', params })
+export const fetchVitalityDetail = (id: string) =>
+  request.get<VitalityDetail>({ url: `/api/wellness/vitality/${encodeURIComponent(id)}` })
+
+export interface HeartMeasurementItem extends HeartMeasurement {
+  user: ManagedUser
+}
+export interface HeartMeasurementStats {
+  recordCount: number
+  userCount: number
+  ppgCount: number
+  ecgCount: number
+}
+export const fetchHeartMeasurements = (params: WellnessListParams) =>
+  request.get<PageData<HeartMeasurementItem, HeartMeasurementStats>>({
+    url: '/api/wellness/heart-measurements',
+    params
+  })
